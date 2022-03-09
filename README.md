@@ -370,5 +370,4 @@ Context 4: Your kitchen is on fire!
 
 A context can contain anything. It serves as the raw material of thought, the outline of a situation or problem, and the impetus for action. In the case of a lawyer NLCA, the context would contain all legal filings and court documents. For a medical NLCA attending a hospital patient, the context would contain the patient’s medical history, charts, lab results, and physician’s notes. The context can be composed in real-time from a variety of data sources: speech-to-text, databases, deep learning annotation of video and images, emails and text messages, news articles and social media, and so on. The content of the context depends upon the intended use case of NLCA.
 
-![Overview of how a context is constructed.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/08%20context.png?raw=true)
-*Overview of how a context is constructed.*
+![Overview of how a context is constructed.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/08%20context.png?raw=true) *Overview of how a context is constructed.*
