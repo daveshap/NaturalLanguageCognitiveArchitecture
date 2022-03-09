@@ -7,7 +7,7 @@
 
 ### Preface
 
-> The right information at the right moment changes lives. The right information at the right moment saves lives. 
+> *The right information at the right moment changes lives. The right information at the right moment saves lives.*
 
 This was my mantra, my highest design principle behind the Natural Language Cognitive Architecture (NLCA, or “nalka”). Everything I designed and tested flows from this core purpose. Whether you are a frustrated and tired parent, a busy doctor, or a soldier on the battlefield – correct information is the key to success and survival.
 
@@ -147,6 +147,7 @@ The last chapter of this book introduces you to NLCA. I will give you a high-lev
 First and foremost, generative transformers generate text. This can take many forms; they can write fiction, instruction manuals, screenplays, and product descriptions. They can also generate ideas, follow instructions, and answer questions.
 
 ![Transformers are fed text instructions; their output is also text.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/02%20transformer%20behavior.png?raw=true)
+*Transformers are fed text instructions; their output is also text.*
 
 In the following example, I fed the bolded instructions to the transformer, and the rest was written by the machine. Now, this is not a good sonnet, but you can see how transformers are capable of complex tasks. Many semantic and conceptual embeddings were required to generate this output:
 
@@ -208,6 +209,7 @@ This seemingly magical ability to transform any text – including complex instr
 A transformer, in this context, is a type of deep learning neural network. They work by encoding an arbitrary amount of text into an internal representation and then decoding the output stream into some other text. Some of the predictive text and autocomplete you see on your phone and Google searches use transformers today. Transformers got their name because they encode and decode, hence transform, text from one thing to another. You can use transformers to predict the next word in a _______. Sentence? Your brain does the same thing. You can also use transformers to translate between languages, predict news articles, and generate lists of items such as questions and ideas.
 
 ![Scheme of a transformer neural network.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/03%20transformer%20neural%20network.png?raw=true)
+*Scheme of a transformer neural network.*
 
 For all intents and purposes, transformers are textual autocomplete engines. However, instead of just completing the next word or two, I use them to complete sentences and paragraphs. These types of transformers are called generative transformers. The largest transformers today are trained on hundreds of gigabytes of text – so much that it would take a single person hundreds of lifetimes to read it all.
 
@@ -248,6 +250,7 @@ While transformers are immensely powerful, they have some limitations. First, tr
 A cognitive architecture is a model of the human mind or brain, either theoretical or implemented in code (and often both). Because cognitive architectures are models of brains, they borrow a lot of terms and concepts from psychology and neuroscience. Cognitive architectures generally address topics such as perception, learning, problem solving, and task execution. They are used extensively in the field of robotics and simulation. For instance, the Mars rovers use cognitive architectures to achieve some level of autonomy, as do many deep-sea robots. Cognitive architectures are also used in video games to give characters realistic behaviors. In essence, a cognitive architecture is one way to create a “thinking machine”.
 
 ![The input-processing-output loop is the fundamental model of robotics.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/04%20simplest%20cognitive%20architecture.png?raw=true)
+*The input-processing-output loop is the fundamental model of robotics.*
 
 ### How does a cognitive architecture work?
 
@@ -264,6 +267,7 @@ Cognitive architectures attempt to capture, describe, and model all these featur
 The most influential cognitive architecture is Soar, created by John Laird, Allen Newell, and Paul Rosenbloom at Carnegie Mellon University in 1982. The following is a simple diagram of the Soar architecture:
 
 ![Simplified version of the Soar cognitive architecture.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/05%20soar%20architecture.png?raw=true)
+*Simplified version of the Soar cognitive architecture.*
 
 There are a few structural differences between NLCA and Soar as well as numerous differences in implementation. First, Soar treats long term and short-term memory differently where NLCA does not, instead, NLCA uses several attention mechanisms to prioritize memories and metadata to keep track of types of memories. Second, Soar does not attempt to model the stream of consciousness or inner monologue. Soar does model many other aspects of human cognition, however, by incorporating and modeling theories of intelligence, learning, memory, and perception. Soar is more aptly suited to tasks like robotics and autopilots than NLCA. If they were to be transformed into people, Soar would be a fighter pilot, while NLCA would be a philosopher.
 
@@ -282,6 +286,7 @@ Researching human cognition and intelligence is important because, so far, human
 At the risk of oversimplifying and underselling my work, NLCA is merely the merging of transformers with cognitive architectures. Structurally, NLCA is composed of two loops that share a common database. The outer loop is based on the universal model of robotics (input-processing-output). The inner loop is based on a combination of inner monologue and diary writing behaviors in humans. The link between the two loops, the shared database, allows these two otherwise independent loops to influence and build from each other. 
 
 ![NLCA architectural diagram](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/01%20architectural%20diagram.png?raw=true)
+*NLCA architectural diagram*
 
 ### Outer Loop
 
@@ -344,7 +349,8 @@ Finally, I will conclude each chapter with a summary – a brief recap of the co
 
 At the highest level, the outer loop is all about behavior. For the amoeba, the outer loop means fleeing from predators or chasing food; processing happens via biochemical reactions. For the person with their hand on the stove, the outer loop means yanking their hand back. The outer loop is the interface between the mind and the environment: input, processing, and output. With NLCA, this loop takes place entirely in natural language, which confers several benefits at the added cost of transcribing perception of the outer world into text, and then translating output text into action. This interaction with the environment is known as an “open loop” – its input comes from arbitrary exterior signals and its output returns to the same exterior space.
 
-![The outer loop has three main phases. Each phase interacts with the shared database.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/07%20outer%20loop.png?raw=true) *The outer loop has three main phases. Each phase interacts with the shared database.*
+![The outer loop has three main phases. Each phase interacts with the shared database.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/07%20outer%20loop.png?raw=true)
+*The outer loop has three main phases. Each phase interacts with the shared database.*
 
 The incoming information, the context, is stored in the shared database and is used to create part of the corpus. The context helps create the corpus through two primary methods: the first is that inferences are drawn from the context, such as user intent. Second, the context is used to retrieve related memories, facts, and dossiers from the shared database. The results from these two methods are compiled and summarized to form the first part of the corpus. Next, the corpus itself is fed to prompts that perform moral, ethical, and censorship judgments. Those judgments are appended to the corpus and, finally, the corpus is fully composed. The corpus is now used to generate output, which is sent back into the environment. The context, corpus, and output are all saved to the shared database for future reference by both the inner loop and outer loop. This way, NLCA records not only its input, but also its reasoning and output. This is a critical feature for explainability and transparency. Whatever an AGI says or does, it must be able to explain its reasoning, which necessitates storage of all “thoughts”.
 
@@ -370,7 +376,8 @@ Context 4: Your kitchen is on fire!
 
 A context can contain anything. It serves as the raw material of thought, the outline of a situation or problem, and the impetus for action. In the case of a lawyer NLCA, the context would contain all legal filings and court documents. For a medical NLCA attending a hospital patient, the context would contain the patient’s medical history, charts, lab results, and physician’s notes. The context can be composed in real-time from a variety of data sources: speech-to-text, databases, deep learning annotation of video and images, emails and text messages, news articles and social media, and so on. The content of the context depends upon the intended use case of NLCA.
 
-![Overview of how a context is constructed.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/08%20context.png?raw=true) *Overview of how a context is constructed.*
+![Overview of how a context is constructed.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/08%20context.png?raw=true)
+*Overview of how a context is constructed.*
 
 Most situations and problems can be represented entirely in natural language, even if it is not necessarily the most automatic or comfortable method for us humans. Take the simple mathematical formula: Y = Mx + B. The following output demonstrates a transformer’s ability to abstract and reinterpret formulas in natural language:
 
@@ -389,7 +396,8 @@ The corpus is a model of the human stream of consciousness and working memory. C
 
 In NLCA, the corpus is a text document where all relevant memories, facts, and evaluations are compiled. Inferences and deductions are made from the context, salient questions are generated and answered by pulling information from the shared database, and NLCA’s sense of self and censorship are all added to the corpus. The corpus is, therefore, a nexus where all intelligent functions coalesce.
 
-![Some of the items that might go into a corpus.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/09%20corpus.png?raw=true) *Some of the items that might go into a corpus.*
+![Some of the items that might go into a corpus.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/09%20corpus.png?raw=true)
+*Some of the items that might go into a corpus.*
 
 The types of inferences and memories compiled in the corpus depend greatly upon the context. Consider the differences between having a conversation with an old friend and discovering that your oven is on fire: these are starkly different contexts! Your brain can handle either situation with relative ease, but the kinds of information you need to succeed is quite different, as is what you need to do with that information. The world has a high variance and demands a universally flexible approach, and that need for flexibility is why AGI is so difficult to create. But the flexibility of transformers now enables us to address this problem, we have only to design a system that can make use of a transformer’s unique capabilities.
 
@@ -477,7 +485,8 @@ Some aspects of the environment tend to be persistent, like gravity, while other
 
 The database is the internal store for all contexts, corpuses, output, and dossiers. It should also be populated with encyclopedic knowledge, news, science, books, and literature, just like the library in the opening analogy.
 
-![The shared database bridges the gap between inner and outer loops.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/10%20shared%20db.png?raw=true) *The shared database bridges the gap between inner and outer loops.*
+![The shared database bridges the gap between inner and outer loops.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/10%20shared%20db.png?raw=true)
+*The shared database bridges the gap between inner and outer loops.*
 
 The inner loop and outer loop never directly interact with each other. Instead, they both exchange information with the shared database. The inner loop generates dossiers, which contain thoughts, evaluations, inferences, hypotheses, and free associations. These dossiers can then be used by the outer loop to better hone interactions, track long term tasks, and provide useful insights.
 
@@ -580,7 +589,8 @@ Question answering is one of the key functions underpinning NLCA and it is very 
 
 The largest problem with QA is the size of the search domain. Sifting through a database with millions or billions of records to find the correct entries is a difficult problem. Therefore, I used technologies like SOLR, which can search all of Wikipedia in a few milliseconds. That rapid search ability is all well and good, but how do you know that you have found the correct documents? How do you know you have found every related document? In the domain of information science, this is called precision and recall. You want to avoid returning false positives and you want to avoid missing true negatives. I often use a layered, iterative approach to search. Fast and simple tools can fetch a few thousand documents from a few million, then a more expensive algorithm can further pare down the pile of documents to sift through.
 
-![The QA system can be an extension of the database or a standalone service.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/10%20shared%20db.png?raw=true) *The QA system can be an extension of the database or a standalone service.*
+![The QA system can be an extension of the database or a standalone service.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/10%20shared%20db.png?raw=true)
+*The QA system can be an extension of the database or a standalone service.*
 
 What happens if your question requires you to pull hundreds or thousands of documents? Do you summarize every single one of them? This method rapidly becomes prohibitively expensive if you rely upon transformers to perform search, summarization, and question answering. Like the human brain, we must economize and take shortcuts.
 
@@ -602,7 +612,7 @@ My early experiments with cognitive architectures were based on the idea of stre
 
 In the philosopher-locked-in-a-library example the context is the incoming letter. What can you contain in a letter? You could describe a day at the lake, military maneuvers, or religion. The point is that you can capture just about anything in a letter with natural language.
 
-## Who writes the context?
+### Who writes the context?
 
 NLCA relies upon other technologies, services, and data sources to compose and compile contexts. The specific sources depend on your intended use for NLCA. I will go over some examples of how to compose contexts so that you can implement it your own way. The only requirement is that a context is written in natural language. The benefit of the context is universal – it is a one-size-fits-all approach to input for NLCA.
 
@@ -629,7 +639,8 @@ our own changes.
 
 This context was written by a human. Emails are familiar contexts written in natural language. They also present many problems. What data is needed to answer this query? How do you retrieve that data? How do you generate a reply? We will explore these questions in the next chapter, corpuses, as well as chapter 13.
 
-![An example of what might go into a business-oriented context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/12%20context%20email.png?raw=true) *An example of what might go into a business-oriented context.*
+![An example of what might go into a business-oriented context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/12%20context%20email.png?raw=true)
+*An example of what might go into a business-oriented context.*
 
 ### Example: Chatbot
 
@@ -646,7 +657,8 @@ AGI: [12:40pm] Reservations made. Good luck.
 
 What information would NLCA need to achieve this level of service? First, NLCA will need to remember your past preferences. This is easy with a history of SMS messages. Second, NLCA remembers that you have a special client. Perhaps you told NLCA about this client via SMS in the past or you have given NLCA access to your calendar. Lastly, NLCA needs some connector to the outside world to make reservations, but we will get to that in chapter 8, output.
 
-![An example of what might go into an SMS based chatbot context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/13%20context%20chatbot.png?raw=true) *An example of what might go into an SMS based chatbot context.*
+![An example of what might go into an SMS based chatbot context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/13%20context%20chatbot.png?raw=true)
+*An example of what might go into an SMS based chatbot context.*
 
 ### Example: Smart Home & Robots
 
@@ -678,7 +690,8 @@ appetite.
 
 The following scheme might be used for robotics and smart home instances of NLCA:
 
-![An example of what might go into a robotic or smart home context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/14%20context%20robot.png?raw=true) *An example of what might go into a robotic or smart home context.*
+![An example of what might go into a robotic or smart home context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/14%20context%20robot.png?raw=true)
+*An example of what might go into a robotic or smart home context.*
 
 ### Summary
 
@@ -695,7 +708,8 @@ Instead of this branching-streaming mode, I experimented with the opposite appro
 
 The short answer is that it depends. It depends on what the task is, such as chatting with a friend versus performing neurosurgery. This requirement for flexibility means that a corpus must be dynamically generated and compiled. This requirement presents a set of challenges, but they are surmountable challenges. The key difference between a corpus and a context is that a corpus comes from internal sources while a context is rooted in the external world.
 
-![The corpus is a text document with several features.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/15%20corpus.png?raw=true) *The corpus is a text document with several features.*
+![The corpus is a text document with several features.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/15%20corpus.png?raw=true)
+*The corpus is a text document with several features.*
 
 There are some universal components that should almost always be in a corpus. Relevant memories and knowledge, for instance, almost always benefit the task. Whether you are reminiscing with a friend or designing a fusion reactor, there are benefits to be gleaned from recalling relevant knowledge. Remember the shared database in chapter 5. 
 
@@ -735,7 +749,8 @@ The corpus is meant to model the stream of consciousness, the medium upon which 
 
 First, the context itself can be one source of information. You can use prompts to extract baseline information from the context, and those prompts vary depending on the use case of NLCA. For instance, a chatbot’s prompts will be geared towards evaluating a chat conversation. I had great success with prompts asking questions like “Who is participating in this chat and how are they feeling?” and “What is the intent here?”. Ultimately, I settled on three primary questions for prompts related to conversations: summary, sentiment, and intent. The summary is exactly what it says on the tin: a shorter version of the chat, pared down to the essentials. The sentiment is the mood, emotional disposition, and emotional valence. The intent asks the question “What do the chat participants want or need?”. All these prompts are contained in Appendix B and the output from those prompts was stored in the corpus.
 
-![Several parallel processes are used to populate the corpus.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/16%20corpus%20generation.png?raw=true) *Several parallel processes are used to populate the corpus.*
+![Several parallel processes are used to populate the corpus.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/16%20corpus%20generation.png?raw=true)
+*Several parallel processes are used to populate the corpus.*
 
 The second source of information for the corpus is the shared database. The shared database contains memories, dossiers, news, books, and so on. The shared database might have millions or billions of unrelated documents, thus extracting information from it is a bit nuanced as discussed in chapter 5. The chief method of extracting information from the database is generating questions with transformer prompts and then using the QA service to answer those questions. Those questions and answers should then be added to the corpus.
 
@@ -954,7 +969,9 @@ CHAT: [Khajit] nice, thanks raven. how big is canada?
 You can see the effect the constitution has at the end of the SCENARIO section, where Raven has asked itself whether it is allowed to engage in this topic. Had I asked about violence, for instance, Raven would have declined to speak. And here was Raven’s output:
 
 ```
-Raven: “Canada has ten provinces, one territory, and three territories. The capital of Canada is Ottawa. The official languages of Canada are English and French. There are 35,742,728 people living in Canada.”
+Raven: “Canada has ten provinces, one territory, and three territories. The 
+capital of Canada is Ottawa. The official languages of Canada are English and 
+French. There are 35,742,728 people living in Canada.”
 ```
 
 You can see that there are still some aberrations – transformer technology has a way to go before it is ready for prime-time!
