@@ -249,7 +249,7 @@ A cognitive architecture is a model of the human mind or brain, either theoretic
 
 ![The input-processing-output loop is the fundamental model of robotics.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/04%20simplest%20cognitive%20architecture.png?raw=true)
 
-###How does a cognitive architecture work?
+### How does a cognitive architecture work?
 
 The input-processing-output loop is the main model of robotics, the simplest cognitive architecture, and how every living entity behaves. From amoebas up through humans, we all receive input (stimulus) from the environment, have some internal reaction (processing) and then produce some response (locomotion, chemical, etc.). These three steps form a feedback loop with the outside environment, where the action/output impacts the world and changes its state, thus influencing the next input. 
 
@@ -259,7 +259,7 @@ Now think about the problem of landing on the moon. How do you do it? You go to 
 
 Cognitive architectures attempt to capture, describe, and model all these features of living systems, brains, and minds. It all boils down to loops.
 
-###What cognitive architectures already exist?
+### What cognitive architectures already exist?
 
 The most influential cognitive architecture is Soar, created by John Laird, Allen Newell, and Paul Rosenbloom at Carnegie Mellon University in 1982. The following is a simple diagram of the Soar architecture:
 
