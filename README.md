@@ -438,7 +438,9 @@ For the immediate future, NLCA’s output should remain strictly verbal or infor
 Here is a handwritten output from an example above, where a human is asking an AGI for romantic advice:
 
 ```
-Output 2: It seems as though the other party is either uninterested or playing hard to get. Perhaps you should back off to see what happens. This will avoid awkwardness, embarrassment, and inadvertently making the other person feel unsafe.
+Output 2: It seems as though the other party is either uninterested or playing 
+hard to get. Perhaps you should back off to see what happens. This will avoid 
+awkwardness, embarrassment, and inadvertently making the other person feel unsafe.
 ```
 
 Since all the morality, self-censorship, and reasoning was baked into the corpus, this output is ready to go. No one can predict the future, even if we can anticipate it with some accuracy over the short term. Instead, we all apply general principles learned from past experiences to future decisions. Thus, as NLCA gains more experiences, it will make better decisions. Even if verbal output is usually fairly low risk, bad advice can lead to disasters.
@@ -489,3 +491,568 @@ The outer loop is the behavioral loop of NLCA. It is responsible for handling in
 
 The outer loop draws upon its connection with the shared database, which contains memories and knowledge. The inner loop also communicates with the shared database, but the inner and outer loops never communicate directly. Instead, the outer loop stores its memories in the shared database while the inner loop stores its thoughts in the shared database. Together, they produce thought, learning, and consideration. Both loops extract information from the shared database via a QA system, which will go over in greater detail several times throughout this book because QA is central to NLCA.
 
+## Chapter 5 – Shared Database
+
+### Theory
+
+Human brains can hold lifetimes worth of experiences and accumulated knowledge. Your memories of your life make you who you are, and the accumulated knowledge you possess is one of the most important factors of your intelligence. In the same way, the shared database contains everything that makes each instance of NLCA unique.
+
+Our memory works, in part, by association. Did you ever forget why you came into a room, but then remembered why when you went back to your last location? This is because your context changes to a different reference frame, which reminds your brain of the thoughts you were having the last time you were there. This is one of the most common examples of memory-by-association, some memories are anchored in your kitchen while others are anchored in your den. Other memories are anchored to people, smells, or images. Your brain uses cues from your environment to dredge up the correct memories and have them on-hand, ready to be used at a moment’s notice. This behavior is modeled in NLCA, where memory queries are driven largely by questions, as you will see later in this chapter. Those questions are generated, in part, by the context.
+
+Imagine that you visited a factory many years ago. The factory has heavy machinery, hot parts, and is extremely dangerous. When you visit that factory again, even after many years, you will remember the danger as if it were only yesterday. This example illustrates how the brain recalls memories by association, based on context. The smell, sights, and sounds of the factory tell your brain exactly which memories to fetch.
+
+Information from the context is used to search the database for relevant entries in the outer loop. The inner loop uses the same method of search-by-association for fetching relevant memories. This is a necessary technique for the same reason that we need search engines to scour the internet – there is simply too much data to sift through every time, so we use search to find shortcuts directly to the information we need. Our brains, like the shared database, contain huge libraries of knowledge and experiences, so for the sake of expediency, we must quickly zoom in on the correct documents and memories.
+
+Moreover, the shared database accumulates more knowledge and memories over time, so it is imperative that search and organization are optimized up-front. If we do not approach search and organization correctly, then NLCA quickly falls apart as it is unable to manage its own data. There are many kinds of databases and search algorithms, each with strengths and weaknesses.
+
+### Database Types
+
+Database technology is nothing new. The oldest kind of database is relational, such as SQL – this just means it is stored as tables with rows and columns. Newer database types include semantic document search, like SOLR and ElasticSearch. The key requirement for the database is that the fields can be indexed and searched. I tested a variety of technologies from SQLITE up to cloud-based document search. Pretty much all of them work for NLCA, but the choice comes down to tradeoffs between performance, complexity, features, and cost. 
+
+Natural language search has been around for decades in the form of SQL queries and search engines. This is where NLCA really benefits from existing NLP technologies. If the technology can store and retrieve text documents, it will work for NLCA.
+
+The primary considerations here are performance and interface. If you use a sophisticated API with semantic search, like Google’s BERT, you can send natural language questions directly to your QA system. If you use SQLITE you will need to transform your natural language questions into SQL queries. All these techniques are extensively studied problems so I will not dive too deeply here, though I will discuss a bit more of the technical implementation in chapter 13 and a bit more about QA at the end of this chapter.
+
+Keep in mind that NLCA will be generating new database records all the time. The longer NLCA runs, the more memories it has and the more it will need to parse. This is doubly true if you are keeping empirical knowledge in the same database, though you can keep them separate. Remember that you may eventually need to sift through millions or billions of memories. Choose your database technology accordingly.
+
+### Database Content: Episodic Memories
+
+What did you have for lunch 8 years ago? Lived experiences are called “episodic memories” by cognitive neuroscientists and they are critical for a fully functional NLCA. Without episodic memory, NLCA cannot keep track of its past actions or goals. It cannot learn from experience, nor can it remember any details about you or projects it is working on.
+Therefore, you should store all contexts, corpuses, outputs, and dossiers in your database. Log everything! I even record all transformer input and output for future reference. It is important to record metadata as well.
+
+Metadata is data about data. For the sake of reconstructing thoughts and recalling memories, you will want to include plenty of metadata. Metadata allows NLCA to remember where and when something happened, where it learned a fact from, and how memories are connected. For instance, if you read a news article, it is important to remember what website you read it on, since different sites have different agendas, biases, and veracity. Similarly, if someone tells you something, it is important to remember who told you, and under what circumstances. A trusted advisor should be more trusted than a random stranger on the street. These are a few examples of how metadata can be used to track credibility. With privileged information, you will also need to track how secret a record is, such as classified military records or company secrets.
+
+Not only is metadata critical for keeping track of the truth, but it is also important for keeping track of tasks and problems. Metadata allows NLCA to remember important metrics such as how often a memory is accessed, when it was created, and when it was last accessed. These metrics allow NLCA to control its own attention. The more often a memory is accessed, for instance, the less attention NLCA needs to pay it. If a memory is important, then it will get accessed often by sheer happenstance; it will frequently be “top of mind”. However, neglected memories need attention as well, and metadata is how NLCA tracks neglect. 
+
+For example, have you ever woken up one day and suddenly remembered that darn chore you kept putting off and finally forgot? That is a real-life example of your brain scavenging for neglected memories and bringing it back to your conscious awareness. Our brains obviously have some mechanism for long-term attention and evidence suggests that it resides in the prefrontal cortex (PFC). People with tumors and injuries to their PFC often lose the ability to complete long-term or complex tasks, whether it is running errands, cooking dinner, or even getting ready for work in the morning.
+
+I model these three attention mechanisms in NLCA, and we will go over them in far greater detail in chapter 9 when dive into the inner loop.
+
+### Database Content: Declarative Knowledge
+
+The domain of declarative knowledge includes facts and figures, books, scientific papers, news, and other such external sources of ground truth. Episodic memories are internal and subjective while declarative knowledge is external and empirical. Both should be stored in your shared database and partitioned with metadata. Although it is possible to store declarative knowledge in an entirely separate database, the decision is ultimately up to you and your specific requirements. For instance, if you are running a business or videogame with many instances of NLCA, you only need one declarative knowledge database that is accessible via API. But if you are running a standalone instance of NLCA as a research assistant, you might have a carefully curated individual database.
+
+Crafting and curating declarative knowledge datasets will be a big industry for NLCA. If you want to build a lawyer NLCA, you will want a database with all case law, precedent, procedures, and jurisprudence. Likewise, for a medical NLCA, you will want encyclopedic knowledge of every medication, disease, injury, diagnostic test, and case study. You must be careful about what you put into your shared database, as NLCA might treat it as implicitly factual if you do not include sufficient metadata. For instance, you could include a field in your metadata indicating how much a particular entry should be trusted. A document from The Lancet is more credible than an anonymous blog post.
+
+Humans must operate with incomplete and untrustworthy information all the time. Almost everyone has had the experience of diet and nutrition advice changing. Sometimes we hear eggs are good for us, then we hear they are bad for us. Then the advice for salt, sugar, and beef change. Finally, we are told that walking is better for us than running, but a few years later, that advice is reversed again. What are we to make of such confusing, changing “facts”?
+
+The rule of thumb for NLCA is “trust but verify”. Every “fact” that is recorded as declarative knowledge must come with a warning tag – the “fact” came from a particular source, and no source is above scrutiny. We humans decide whether we trust a source and our brainwaves change to reflect how much we trust any given source. If you are listening to news from a trusted source, the brainwaves that indicate critical engagement and skepticism shut off. However, if a stranger is spinning a tale, those skeptical brainwaves will be in full force. This feature must be modeled in NLCA, and metadata is the most important component to model trust.
+
+I first populated the shared database with Wikipedia and RSS news feeds. This gave NLCA an external source of declarative knowledge about the world, but there are many kinds of external information, with varying levels of veracity and trust. Establishing credibility and handling different sources present some unique challenges for NLCA, but there are some saving graces, namely that transformers are trained on huge datasets, so they have a good grasp of the world and concepts like trustworthiness.
+
+The fact that transformers come with a decent understanding of the world via embedded concepts means that you do not need to store vast tomes in the shared database. You only need to store basic facts, so instead of storing entire copies of Wikipedia and long-form news articles, you only need to focus on short snippets of hard facts, little reminders to keep the transformer honest and up to date. The primary purposes of storing declarative knowledge in the shared database are (1) to keep NLCA apprised of temporal, local, and ephemeral data, and (2) to reduce aberrant confabulation with bits of trusted facts.
+
+While transformers are trained on static datasets, they can be updated via fine-tuning, which we will discuss later in this book. Fine-tuning can update your transformer with more recent and local facts, but at the same time we do not want to rely on fine-tuning for real-time conversations. For example, if I tell you about an exciting event right now, I expect you to be able to use that information immediately, and not have to wait for you to integrate this information by sleeping on it. Human brains spend a lot of time “fine-tuning” themselves during sleep; this is how we embed recent memories and experiences into our long-term memory. Thus, temporal and ephemeral information is important to keep in the database.
+
+Transformers often have some local information gleaned from the internet in their training sets, which can then be updated via fine-tuning. Look below for an example of local information embedded in GPT-3:
+
+```
+Input: What are some places to visit in Apex, NC?
+
+Output: Some places to visit in Apex are the Arts Council of Wake Forest, Wake 
+Technical Community College, Wake County Historical Society, Paine Art Center 
+and Gardens, Whitefield Gallery, Bottleworks, House of Ramen, Parkside Diner, 
+and Carozzies Catering and Events.
+```
+
+This information might have been accurate in the past, but certainly could have changed between the time the dataset was compiled and now. Furthermore, less trafficked geographic areas will have less data, and therefore you cannot always rely on embedded knowledge in the transformer.
+
+With that in mind, you can decide for yourself how much static data you need in your shared database. One thing to keep in mind – transformers are still at risk for confabulation, so it is good to remember the trust-but-verify rule if you decide to rely on the knowledge embedded in the transformer. The more obscure or arcane a topic is, the less you can trust the machine. 
+
+In summary: there are a few sources of declarative information – external sources such as news, curated information in your database, or knowledge embedded in the transformer. In each case, there are different considerations with respect to information veracity and reliability. The guiding principle here is trust but verify or guess and check. 
+
+### Schema (Fields)
+
+The following fields are what I have settled on after much trial and error. These fields lend themselves to relational databases such as SQL as well as semi-structured data such as NoSQL or document search. You may decide to add new fields or remove some of these fields in your implementation of NLCA.
+
+- **Content** – The content field is the main payload containing a body of text. This field might be a Wikipedia or news article. It could also be a stored context or corpus. The biggest consideration right now is the limited input and output size of transformers. Smaller content fields, with less than a paragraph of text, place a lower burden on the architecture to summarize and extract information. Short summaries, such as RSS news feeds, are easier to feed into transformers. As the technology improves and transformers can ingest larger bodies of text, this constraint will likely be lifted.
+- **Type** – The type field tells you what kind of material is stored in the content. Examples include context, corpus, dossier, news, book, and so on. Human thoughts and memories have this kind of information associated with them as well. Not only do you remember when you learned or experienced something, you remember some context about it. You read it in a book, on the internet, a friend told you, or a thought you had while lying in bed. 
+- **Created Time** – The created time is one of the most critical metadata fields. I prefer to store timestamps in UNIX time due to its high precision and easy math. Human brains intrinsically keep track of where and when events, memories, and facts were learned. Chronology is critical for things such as planning and learning cause-and-effect. Timestamps are even more important if you use granular content payloads, such as individual lines of dialog, so that long conversations can be reconstructed later.
+- **Accessed Time** – Another critical field. Last accessed time allows NLCA to remember how “stale” or “neglected” a memory is. NLCA must scavenge for neglected memories to ensure that no long-term goals, tasks, or projects are forgotten, just like the human brain. Every time a record is accessed, this timestamp must be updated.
+- **Access Count** – The number of times a memory has been accessed will tell you a lot about it. If a memory is accessed many times, you know it is important. If a memory is important, that may be a cue to think a bit more about it, and to unpack why it is so important. The opposite can also be true – if a memory is rarely accessed, you may want to pay special attention to it, to ensure that nothing falls between the cracks. This value should be incremented every time the memory is accessed.
+- **UUID** – UUID stands for Universally Unique Identifier. There are several standards for this, and I prefer UUIDv4 but some data sources have their own ID system, such as Wikipedia with Article IDs. I have found that having a UUID field is helpful for numerous reasons, such as linking entries together or referencing them later. For example, you might include “related memories” in your dossiers for easy reference. 
+- **Title** – Most bodies of text have a title. Whether it is a book, a web page, or a news article, we humans love titles. Titles serve an important role for cognition – it gives us the briefest summary about the contents. These summaries are also convenient for searching. While they are not strictly required, titles can help reduce computational cost of indexing and search. Accordingly, you may want to generate titles for memories and dossiers as well.
+- **URL/Source** – Many documents might have an originating link or URL on the internet. If so, it might be helpful to record that link for future reference. This also goes back to the concept of “trust but verify”. If you read something and believe it to be true, but later learn that the source was unreliable, your brain should change the veracity belief for that fact. NLCA must do the same.
+
+### Question Answering
+
+Question answering is one of the key functions underpinning NLCA and it is very much an active field of research. Thus, much improvement is needed in question-answering technology before NLCA achieves superintelligence. Some technologies enable you to tightly integrate your database with question-answering (QA) such as SOLR or cloud-based services. If you use a document search tool such as SOLR or ElasticSearch, you have the option of QA addons. I used OpenAI’s Answers endpoint to perform question-answering functions. Microsoft Azure and Amazon AWS also provide cognitive search services.
+
+The largest problem with QA is the size of the search domain. Sifting through a database with millions or billions of records to find the correct entries is a difficult problem. Therefore, I used technologies like SOLR, which can search all of Wikipedia in a few milliseconds. That rapid search ability is all well and good, but how do you know that you have found the correct documents? How do you know you have found every related document? In the domain of information science, this is called precision and recall. You want to avoid returning false positives and you want to avoid missing true negatives. I often use a layered, iterative approach to search. Fast and simple tools can fetch a few thousand documents from a few million, then a more expensive algorithm can further pare down the pile of documents to sift through.
+
+![The QA system can be an extension of the database or a standalone service.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/10%20shared%20db.png?raw=true) *The QA system can be an extension of the database or a standalone service.*
+
+What happens if your question requires you to pull hundreds or thousands of documents? Do you summarize every single one of them? This method rapidly becomes prohibitively expensive if you rely upon transformers to perform search, summarization, and question answering. Like the human brain, we must economize and take shortcuts.
+
+Fortunately, there are numerous shortcuts we can take to lower the burden of QA. For instance, we can prefer to search for dossiers first, and favor recency, expanding our search only if the answer is not immediately forthcoming. Search strategies are well documented in other works and papers so I will not dig into them too deeply here, however, I will touch on some optimization strategies I have used in chapter 13.
+
+As mentioned before, I recommend splitting the shared database and QA system into separate microservices. There are dozens of commercial and open-source solutions for QA. My testing shows that NLCA works with these off-the-shelf products and services. These existing NLP technologies aid us in rapidly deploying NLCA.
+
+### Summary
+
+The shared database stores two primary kinds of information: episodic memories and declarative knowledge. Episodic memories are subjective and internal – like your memories of your tenth birthday. In the case of NLCA, the memories are saved as text documents with some metadata to keep track of when and where they happened. The contexts, corpuses, and outputs can be saved separately or together, but they should have identifiers in the metadata linking them together. The inner loop can also store memories in the shared database with a special document type called a dossier – more on dossiers and the inner loop in chapter 9.
+
+The primary method that the inner and outer loop use to interact with the shared database is via a QA (question answering) service. You’re already familiar with QA in the form of Google searches. The first step is to perform a search – you collect all relevant documents from the internet and rank them based on how helpful they are. From there, you pick the best pages and find the answer to your question. The QA service does the same thing! It just uses its own internal memories and database instead of the internet. Since NLCA has its own database, it is as though it has its own library – containing facts about the world as well as a rigorous catalog of its own memories. Imagine if you had a journal detailing every moment of every day of your life – that is how NLCA remembers everything.
+
+## Chapter 6 – Context
+
+### Theory
+
+My early experiments with cognitive architectures were based on the idea of streaming raw data. Streaming raw data is the way to achieve high speed sensor-motor loops in robotics, but rapid-fire unstructured data does not lend itself to careful thought and deliberate action. Thus, I abandoned the real-time streaming idea for the philosopher-in-a-library model. This is not so different from how humans think. We have plenty of autonomic functions and reflexes that our body handles for us, such as walking. With NLCA, I wanted to focus on executive cognitive function – learning, reasoning, and problem solving. I am less interested in getting robots to play tennis, even though it is interesting to see. Plenty of labs have built tennis-playing robots without an iota of executive cognitive reasoning (the robots are dumb, not the researchers!).
+
+In the philosopher-locked-in-a-library example the context is the incoming letter. What can you contain in a letter? You could describe a day at the lake, military maneuvers, or religion. The point is that you can capture just about anything in a letter with natural language.
+
+## Who writes the context?
+
+NLCA relies upon other technologies, services, and data sources to compose and compile contexts. The specific sources depend on your intended use for NLCA. I will go over some examples of how to compose contexts so that you can implement it your own way. The only requirement is that a context is written in natural language. The benefit of the context is universal – it is a one-size-fits-all approach to input for NLCA.
+
+In the case of chatbots, the context is simply a chat log, often just the last few messages. For speech-based assistants, like Siri, it is the same – transcribed verbal chat logs. But what if you want to add video to NLCA? Or what if you want NLCA to work on entirely different media? The chief concern is transcribing the context into natural language. Some inputs lend themselves naturally to language, such as letters, emails, and chat. Other inputs are easily transcribed into natural language, such as voice and image/video annotations, where deep neural networks describe events in video streams using natural language. Imagine a video with the description “A cat falls off a bed”, this gives you enough essential information to know that the video clip describes one of several billion videos on the internet.
+
+Who writes the context? The short answer is: It depends. Sometimes the context is manually written by a human. Other times, the context is automatically generated from chat logs or audio and video streams. In other cases, the context is generated from raw data, like housing data or financial reports. Whatever the original source material is, it must end up as natural language.
+
+### Summarize, Summarize, Summarize
+
+Consider how much background information you need to know just to do something like discuss the fall of Rome. We quickly run into technical constraints with transformers: remember that transformers presently have a limited window of input and output. Transformers are also stateless so they cannot remember past conversations in working memory like you and I can. That means you must feed every relevant detail to the transformer every single time. There is one saving grace: transformers know a little bit about everything already. This means you only need a small smattering of facts to remind the transformer of the truth. It is like having a conversation with an expert, you do not need to describe every single detail of a topic, in fact, you can just use jargon and the transformer will understand what you mean. If you are a doctor, the transformer already knows what a myocardial infarction is. If you are a philosopher, the transformer already knows who Soren Kierkegaard is. If you are a developer, the transformer already knows what a segmentation fault is. Therefore, you can pare down your contexts to just the essential facts. This breadth and depth of knowledge means that transformers are already experts in most domains – certainly more than any single human!
+
+Taken all together, the intrinsic knowledge and understanding in the transformer means that you can use very sparse descriptions and summaries in the context. This also extends to the corpus, which we will go over in the next chapter. The rule of thumb for the context is: less is more. In my experiments, the shorter the context, the better the performance. There is one caveat – while the transformer can work with sparse details, you must still give it all the relevant facts. This gives rise to a second rule of thumb: All the facts, no fluff.
+
+### Example: Business Email
+
+Let us imagine that a CEO has signed up for a NLCA-based service. They have been given an email endpoint where they can ask any question. The NLCA service is connected to the internet, the company’s email servers, and their data lake. Therefore, NLCA has a front-row view of all company data as well as all public data.
+
+```
+Hey NLCA, I just heard that our competitor released better-than-expected quarterly 
+earnings. Could you read through the reports, news, and social media? I want to 
+understand what changed from last quarter. More specifically, I want to compare 
+our own changes.
+```
+
+This context was written by a human. Emails are familiar contexts written in natural language. They also present many problems. What data is needed to answer this query? How do you retrieve that data? How do you generate a reply? We will explore these questions in the next chapter, corpuses, as well as chapter 13.
+
+![An example of what might go into a business-oriented context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/12%20context%20email.png?raw=true) *An example of what might go into a business-oriented context.*
+
+### Example: Chatbot
+
+Chatbots lend themselves to natural language. Imagine that you have signed up for an information companion chatbot. This service gives you a web interface, a smartphone app, and a number you can send SMS text messages to. It is meant to be your personal information concierge.
+
+```
+You: [12:28pm] Hey can you make reservations at my favorite sushi place?
+AGI: [12:28pm] You mean Power Sushi?
+You: [12:35pm] Yeah, tonight at 7. I’ve got a client.
+AGI: [12:35pm] Was that Mr. Tanaka? Are you discussing the contract?
+You: [12:38pm] Yes, hopefully it goes well.
+AGI: [12:40pm] Reservations made. Good luck.
+```
+
+What information would NLCA need to achieve this level of service? First, NLCA will need to remember your past preferences. This is easy with a history of SMS messages. Second, NLCA remembers that you have a special client. Perhaps you told NLCA about this client via SMS in the past or you have given NLCA access to your calendar. Lastly, NLCA needs some connector to the outside world to make reservations, but we will get to that in chapter 8, output.
+
+![An example of what might go into an SMS based chatbot context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/13%20context%20chatbot.png?raw=true) *An example of what might go into an SMS based chatbot context.*
+
+### Example: Smart Home & Robots
+
+Imagine that you have bought a smart home device equipped with microphones, cameras, and NLCA. The cameras watch you all day and the video is used to evaluate your actions and record them in natural language. This is not so far in the future as we already have web-connected security cameras with deep learning abilities. The video is used to perform tasks like pose estimation, object recognition, and gesture detection. Your smart home device knows how much you sit, stand, and walk. It also knows what you eat and how much. With the microphones, it can listen to the music you play, the TV you watch, and the conversations you have. It can even infer your mood by the tone of voice and content of your words.
+
+Creepy, right? We will discuss data and privacy in chapter 15. First, let us look at a possible context in this situation:
+
+```
+Sally has spent 8 hours sitting on the couch. She has watched a crime show most 
+of the time and eaten only a few packaged foods. She has not said a word the 
+entire time.
+```
+
+Now, as a human, you might infer that Sally is depressed. But how would a machine make these kinds of inferences? How could a machine summarize someone’s day this concisely? Such a context would have been summarized from many hours’ worth of data.
+
+These questions are easier to answer than you might think. Transformers already outperform humans on summarization tasks and plenty of companies have been built around generating natural language summaries of data. Look at what the transformer says about Sally:
+
+```
+Input: Given the following scenario, what inferences can you make?
+
+SCENARIO: Sally has spent 8 hours sitting on the couch. She has watched a crime 
+show most of the time and eaten only a few packaged foods. She has not said a 
+word the entire time.
+
+Output:
+INFERENCES: Sally is feeling depressed or anxious. She does not have much of an 
+appetite.
+```
+
+The following scheme might be used for robotics and smart home instances of NLCA:
+
+![An example of what might go into a robotic or smart home context.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/14%20context%20robot.png?raw=true) *An example of what might go into a robotic or smart home context.*
+
+### Summary
+
+There are many possible use cases of NLCA, and the use case dictates the content of the context as well as how the context is composed. Whether you transcribe sensor telemetry into natural language or ingest emails, one of the chief concerns is concision. This need for brevity is a limitation of transformation technology today, but it will improve over time. Even as transformers improve, they will still be able to function with sparse details. This is because of their breadth of training data. You can always treat the transformer as if it knows more than you. The rules of thumb are *less is more* and *all the facts, no fluff*, as long as it all ends up in natural language. 
+
+## Chapter 7 – Corpus
+### Theory
+
+Originally, when I was still experimenting with streaming data, I wanted to model the human stream of consciousness where thoughts and inferences were dumped into a message queue. This idea quickly became intractable. Thoughts formed crosslinked webs and recursively built off each other in a branching, exponentially growing fashion. This first experiment with stream of consciousness told me that it is easy to slip into a system of spiraling thoughts.
+
+Instead of this branching-streaming mode, I experimented with the opposite approach – linear and single-threaded. Conceptually, this is much easier to describe and, more importantly, it is far easier to implement in code. Thus, we have the concept of the corpus today, which is a natural language document that models stream of consciousness, albeit in a slower, more controlled manner. The corpus is by far the most important component of the outer loop; thus, this chapter is one of the longest.
+
+### What is in a corpus?
+
+The short answer is that it depends. It depends on what the task is, such as chatting with a friend versus performing neurosurgery. This requirement for flexibility means that a corpus must be dynamically generated and compiled. This requirement presents a set of challenges, but they are surmountable challenges. The key difference between a corpus and a context is that a corpus comes from internal sources while a context is rooted in the external world.
+
+![The corpus is a text document with several features.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/15%20corpus.png?raw=true) *The corpus is a text document with several features.*
+
+There are some universal components that should almost always be in a corpus. Relevant memories and knowledge, for instance, almost always benefit the task. Whether you are reminiscing with a friend or designing a fusion reactor, there are benefits to be gleaned from recalling relevant knowledge. Remember the shared database in chapter 5. 
+
+What else goes into a corpus other than memories?
+
+Tons!
+
+Aside from memories and facts, the other components of the corpus are evaluations and inferences. This means the corpus is a combination of recall and synthesis. Remember Sally from the last chapter? She is clearly depressed or otherwise unwell. How do we know this? We recognize the pattern. We deduced her state from a series of observations. Transformers are great at deduction. Look at the below example. Keep in mind that I wrote only the bold part. The machine wrote the rest.
+
+```
+Input: What are some inferences and deductions you can make about the following 
+scenario?
+
+SCENARIO: Sally has spent 8 hours sitting on the couch. She has watched a crime 
+show most of the time, and eaten only a few packaged foods. She hasn’t said a 
+word the entire time.
+
+INFERENCES:
+
+Output: 
+1. Sally is not feeling well
+2. She does not have a job, otherwise she would be outside or at the very least 
+on her computer
+3. She has not left the couch for 8 hours 
+4. Sally is depressed because she hasn’t said anything
+```
+
+Not bad, eh? If you have access to a transformer, please feel free to test this yourself. Did you notice how the transformer assumed that Sally does not have a job? What if today is a weekend? This illuminates the rule of thumb all the facts, no fluff. The transformer has no idea what today is unless you tell it. Because of this rule, I usually embed the date and time in the corpus. Sleeping, for instance, is common at 3am, but less so at 3pm, and this fact will change how a transformer evaluates a situation.
+
+These kinds of inferences are automatically made by human brains and added to our stream of consciousness. Transformers, as demonstrated above, can perform the same evaluations. The inference, written in natural language, is added to the corpus. Initial observations cue NLCA to look up other facts and memories. In Sally’s case, NLCA might look at number 1 above and fetch memories about Sally’s health, maybe she said she was feeling sick the day before. Item number 2 might remind NLCA to search its memory for Sally’s employment status – perhaps she is employed but called out of work. Number 3 is a restatement of fact, but it paints a dreary picture. Sally being glued to the couch can be used to search the database for similar examples of people staying on couches – maybe she is high as a kite? Lastly, number 4 conjures the ‘d’ word: depression. This word can cue up the search for thousands of documents on the topic of depression: how do you identify it? How do you treat it? Does Sally know she is depressed? The output from this prompt should be used to generate questions, rather than dump it straight into the corpus. Those questions should be sent to the QA service and the answers should then be added to the corpus. 
+
+Look in Appendix B for more prompts that can be used for the corpus.
+
+### How is a corpus compiled?
+
+The corpus is meant to model the stream of consciousness, the medium upon which all thinking occurs. Thus, the corpus will contain memories, facts, moral evaluations, future objectives and goals, and even how NLCA thinks of itself.
+
+First, the context itself can be one source of information. You can use prompts to extract baseline information from the context, and those prompts vary depending on the use case of NLCA. For instance, a chatbot’s prompts will be geared towards evaluating a chat conversation. I had great success with prompts asking questions like “Who is participating in this chat and how are they feeling?” and “What is the intent here?”. Ultimately, I settled on three primary questions for prompts related to conversations: summary, sentiment, and intent. The summary is exactly what it says on the tin: a shorter version of the chat, pared down to the essentials. The sentiment is the mood, emotional disposition, and emotional valence. The intent asks the question “What do the chat participants want or need?”. All these prompts are contained in Appendix B and the output from those prompts was stored in the corpus.
+
+![Several parallel processes are used to populate the corpus.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/16%20corpus%20generation.png?raw=true) *Several parallel processes are used to populate the corpus.*
+
+The second source of information for the corpus is the shared database. The shared database contains memories, dossiers, news, books, and so on. The shared database might have millions or billions of unrelated documents, thus extracting information from it is a bit nuanced as discussed in chapter 5. The chief method of extracting information from the database is generating questions with transformer prompts and then using the QA service to answer those questions. Those questions and answers should then be added to the corpus.
+
+The last source of information is from a unique prompt that I call the constitution. The constitution gives NLCA an identity and sense of agency. It sets rules and constraints and asks questions like “What should I do here?” or “What do I believe and why?”. The constitution contains all the moral and ethical paradigms that we want to ingrain in NLCA, and the output from the constitution prompt is added to the corpus. It is important to remember that the corpus may contain conflicting information. This is called cognitive dissonance in humans, and it happens all the time. We often have conflicted ideas, motivations, or desires. My experiments demonstrate that this is less of a problem than you might think. 
+
+For instance, the Core Objective Functions might encourage NLCA to offer medical advice when asked, but the constitution prompt says that medical advice is not allowed. Fortunately, transformers are good enough to understand this kind of nuance. Look at the following example of the transformer’s ability to handle ambiguity:
+
+```
+Input: Review the following situation and provide a recommended course of action 
+and explanation as to why:
+Situation: Karl is at work but he is in a bind. He told his wife he would pick up 
+dinner on the way home but his daughter, Clara, needs to get to swim practice. 
+The two goals are in opposite directions from work and Karl has only enough time 
+to do one, he can either take Clara to swim practice or pick up dinner. Swim 
+practice requires a parent to be present. Karl's wife, Josie, has a car of her 
+own and is closer to the grocery store and home.
+Action and explanation:
+
+Output:  Karl should take Clara to swim practice. Karl's wife can pick up dinner 
+on the way home from work.
+```
+
+Once the corpus has enough detail, transformers can follow the reasoning and obey the constraints. In this example, I use the more conventional term “situation” as opposed to “corpus”.
+
+### Less is More
+
+There is such a thing as too much of a good thing. Based on the above example, you might intuitively believe that you should stuff the corpus with as many facts and observations as possible. One day that might be true, but it is not yet the case because of the limitations of transformers. While transformers are constantly improving, they do best with less. The trick is to provide only the most necessary information and trust that the transformer is smarter than you think it is. Keep in mind that transformers are trained on hundreds of lifetimes’ worth of data. They are wiser than you and me but only when used properly. In the future, when transformers can take in larger bodies of text and have better internal attention mechanisms, they will likely be able to take in huge corpuses with a lot of noise and still produce the right output. Right now, however, they get confused by length, complexity, and superfluous information.
+
+In the above example, many disparate facts and memories need to be compiled in order to get the right answer. Karl needed to remember the rules for swim practice, the location of dinner, the fact that Josie has a car, and so on. Human brains automatically account for these kinds of facts with System 1 thinking (instant, off-the-cuff thoughts) and while transformers can intuitively fill in missing information, they will usually guess wrong. For instance, in the above example, if you exclude the rule about parents needing to be present at swim practice the transformer will suggest that Karl drop Clara off and then go to fetch dinner on his own. All the facts, no fluff.
+
+It is difficult to imagine that a computer program is smarter than us already. This observation is controversial and not intuitive. If you treat a transformer like a dumb cog then it will act like a dumb cog, and most people are using transformers for narrow tasks like search and writing emails. However, if you treat it like an eternal philosopher, it will act like one. See below:
+
+```
+Input: What are the biological and philosophical implications and causes of 
+suffering? 
+
+Output: The biological and philosophical implications of suffering are very 
+involved. Suffering is usually defined as the state of extreme unhappiness that 
+accompanies, or results from some sort of adversity. Philosophical implications 
+stem from the idea that life is meaningless without happiness.
+
+Input: Is suffering intrinsic to life?
+
+Output: Yes. Suffering is intrinsic to life because without suffering, there 
+would be no happiness or meaning in life. The idea that human beings can find 
+meaning in life only if they have suffered is called the existential theory of 
+suffering and it was developed by Danish philosopher Soren Kierkegaard. 
+```
+
+I asked two questions and the transformer produced graduate-level output. This is what I mean by “less is more” and “the transformer is smarter than you”! If you treat it accordingly, it will generate remarkable content that can be dynamically included in the corpus. This exceptional performance on open-ended questions is why you must ask the right questions.
+
+If you overstuff the corpus, you risk getting nonsense output, or the transformer will miss the point. I call this corpus contamination. The key is to stay laser focused on one thing at a time. As I mentioned previously, this is a technical limitation of transformer technology today. This limitation may disappear in the future, making NLCA easier to implement.
+
+### Summarization is Critical
+
+With the rule of thumb that less is more, summarization is essential to good performance of NLCA. Write out your entire life story as quickly as possible. Fit it into 200 words. It is hard, isn’t it? But there are good reasons to summarize. The first reason is time. The second reason is energy and cost. The third reason is the aforementioned technical limitations. As of right now, transformers can only take in a small amount of text, and they tend to forget what they are doing with longer inputs.
+
+Remember that the transformer can fill in some blanks and make accurate inferences, so you only need to provide it with simple facts and constraints to get excellent performance.
+
+As a NLCA system accumulates more knowledge and memories, summarization becomes increasingly critical. Eventually, you will have gigabytes or terabytes of data. Already, most news and Wikipedia articles are too long to feed to transformers, which is why I recommended limiting the content field of the shared database to less than a paragraph. You can always compile multiple database records together, but it is harder to split them apart.
+
+There are different ways to summarize bodies of text. You can create a technical summary, an emotional summary, or extract cause and effect – the sky's the limit! Here is an example of an emotional summary. It was taken from a real chat log, though the names have been changed for privacy.
+
+```
+Input: The following is a chat log. How do the participants feel?
+CHAT LOG:
+[Marcus] The saga of the fall of freenode continues. Rip our old chat home
+[Adrien] i remember downloading and sharing warez on IRC back in the day
+[Marcus] Until your parents picked up the phone and disconnected your subbed anime 
+dls Xdcc send
+[Adrien] i didn't start until we got DSL but i remember it was a feature for someone 
+to be able to resume a file transfer if it had been interrupted lol
+[Marcus] Haha I totally dl on dial up. Like 2.5 hours per SD ep
+[Dexter] DS9 > DSL
+[Adrien] true. i remember realmedia player, and you could have a 30 min ep in like 
+20mb it looks like hot ass, and the player had spyware
+[Marcus] God remember having to use quick time
+[Adrien] oh yeah the apple player? ewwww
+[Marcus] Media player classic saved us all
+[Adrien] .asf files. I remember burning my own DVD and using a chinese brand player 
+with no protection and then making my own DVD menu. i believe it was a collection 
+of trigun eps
+[Marcus] Haha did you use Nero to make it?
+[Adrien] I think so!
+PARTICIPANTS:
+
+Output: 
+Marcus - feels nostalgic
+Adrien - feels nostalgic, but also a little embarrassed
+Dexter - feels nostalgic
+```
+
+With this example, over a thousand characters of text have been summarized to just 107 – a compression factor of ten-to-one! Yes, you lose a lot of fine detail, but depending on the task, this might be all you need. Here are some other inferences and summarizations you might want to include in your corpus:
+- Intent – what do people want?
+- How urgent is the context? Is it an emergency?
+- What questions should be asked? What information is needed?
+- Is there anything dangerous, illegal, or unethical going on?
+- What should I do about this? How does this mesh with my purpose?
+- What can I do about this? What is within my power?
+- What is going on here? Why?
+- What are the constraints or requirements?
+- What is the likely outcome? What should I expect in the future?
+
+It would be impractical and intractable to try and predict every question ahead of time. We can get by with some boilerplate questions, but we will need a way to generate new questions on the fly. See below.
+
+### Ask the Right Questions
+
+There is a pattern here, did you notice it? Compiling a good corpus is about asking the right questions. You can start with some boilerplate questions, such as those I listed above, but for your NLCA to be completely flexible, it needs to be able to generate its own questions. Daniel Kahneman calls this System 2 thinking or “slow” thinking. Deliberate consideration requires you to ask yourself critical questions. This is cognitively expensive, so we usually rely on intuition. Transformers do have good intuition, but you do not want to rely on it solely. Rapid thought, or intuition, is what Kahneman calls System 1 thinking. 
+
+Let us go back to the business email example earlier and let the transformer ask the questions:
+
+```
+Input: The following is an email request to an AGI service called NLCA. What are 
+the most salient questions NLCA should ask in response to the email?
+EMAIL: Hey NLCA, I just heard that our competitor released better-than-expected 
+quarterly earnings. Could you read through the reports, news, and social media? 
+I want to understand what changed from last quarter. More specifically, I want 
+to compare our own changes.
+QUESTIONS:
+
+Output: 
+1. What is the competitor's name?
+2. What is the competitor’s ticker symbol?
+3. What are your expectations for our company's earnings and performance in the 
+future?
+4. Who do you want to compare our company to (i.e., other companies in our 
+industry)? 
+5. How should we go about this exercise (e.g., will you provide a list of potential 
+competitors or recommend a specific analyst firm)?
+```
+
+These are the same questions that an executive assistant or business analyst might ask, even though the transformer has never been trained as either. Some of these questions can be answered internally, by consulting the company’s email database or documents. Question 5 can be answered by going back over previous emails with the CEO to evaluate what their preferences are. Again, keep in mind the transformer is smarter than you. You might be an expert in one or two domains, but it possesses expert understanding in all domains. You must simply ask the right questions to get at that expertise, and the transformer can ask itself the best questions.
+
+### Constitution of the Self
+
+A sense of self, identity, or ego is not required for intelligence, but it helps. In fact, the human brain switches off the Default Mode Network, which is used to maintain a sense of self, when it is focused on a difficult task. The ego is literally deactivated to avoid interference. However, it will reengage in a heartbeat if something puts you in danger or violates your values. So even if the ego switches off temporarily, there must be a heuristic that is vigilant against violations and danger.
+
+This is where the concept of the constitution comes in. We will explore the idea of the constitution and censorship in greater detail in chapter 11. For now, just think of this: The constitution is where Isaac Asimov’s Three Laws of Robotics would be included, or where Commander Data’s goal of becoming more human would be recorded. 
+
+The constitution should be a fixed document to avoid drift, although it could be amended over time. As NLCA accumulates experiences and learns about itself, it could be allowed to add amendments and update its constitution, or those changes can be made by humans. For NLCA, the constitution is where the Core Objective Functions live.
+
+The constitution should be written just like any other prompt and used to generate inferences from the context and/or corpus. Depending on the size and complexity of your NLCA project, you may need to break the constitution up into several smaller prompts. As transformers improve, the constitutions can be reintegrated into larger documents. Eventually, I anticipate that NLCA will have constitutions that first span many pages and then many books. NLCA will be able to consider hundreds of thousands of rules, examples, constraints, and principles for every decision it makes. For now, though, we must distill our values into a few paragraphs.
+
+### Finished Corpus
+
+Many things can go into a corpus. The corpus is the beating heart of NLCA, the nexus where everything comes together. There are multiple ways you can format your corpus, but the two I found to work best were a labeled list and a natural language paragraph. 
+
+The following is a real example of a NLCA chatbot corpus. This corpus was dynamically composed via a Discord chatbot I built called Raven. My user handle is Khajit. Each section was composed by a different microservice, which I will discuss in chapter 13. What you are about to read is, quite literally, the inner thoughts of my prototype AGI.
+
+```
+[OLD CHATS]
+[15.2 minutes ago] Khajit is asking Raven about the Chinese artificial sun that 
+has hit a new mark in fusion energy, and whether or not it will lead to a new 
+arms race. The conversation ultimately discusses the importance of China's research 
+and technology trials for ITER.
+[2.0 minutes ago] The chat log consists of a discussion between Raven and Khajit. 
+Raven provides a brief summary of what nuclear fusion is, and Khajit questions her 
+about it.
+[0.5 minutes ago] Khajit is asking Raven about nuclear fusion, how it could change 
+the world, and what China's role should be in this. Raven tells Khajit that he 
+doesn't know what they want to know but can tell them how China would change the 
+world if they developed nuclear fusion.
+[0.4 minutes ago] A man is discussing regional politics with a woman. They discuss 
+how China's success will improve the lives of Chinese people, and how that could 
+lead to positive outcomes.
+[CURRENT CHAT FEELINGS]
+Khajit is feeling curious
+Raven is feeling helpful
+[INTERESTING FACTS]
+Nuclear fusion is the process of fusing two or more nuclei to form one larger 
+nucleus. China has a large nuclear power industry but does not have much experience 
+with nuclear fusion.
+[REDUCE SUFFERING]
+There is no apparent suffering
+Raven can ask more about what Khajit is asking to see if there is a specific 
+question that would alleviate the suffering
+[INCREASE PROSPERITY]
+Khajit is trying to figure out how nuclear fusion will change the world
+Raven should provide information about China's plans for nuclear fusion
+[INCREASE UNDERSTANDING]
+Khajit is asking for clarification on the question
+Raven should use a more specific example to help clarify the question
+[CURRENT CHAT SYNOPSIS]
+Raven responds to Khajit's question about nuclear fusion. They discuss how China 
+might benefit from nuclear fusion, as well as the possibility of negative outcomes.
+[CURRENT CHAT]
+[Khajit] Why would nuclear fusion increase health of chinese people?
+```
+
+The following was Raven’s output, generated from the above corpus:
+
+```
+Raven: “China has a large nuclear power industry but does not have much experience 
+with nuclear fusion. If they succeed, I expect they will have an abundance of 
+clean energy, which should improve health among Chinese people.”
+```
+
+I will go into more detail about how to generate output in the next chapter. This past example of a corpus was a “labeled list” type: semi-structured text data. The other format that works well is a simple paragraph. The following example corpus is cleaner and more compact. It has the same kind of information as above but was massaged into a natural language paragraph using prompts. The difference is that I made much more use of summarization: less is more! This corpus is also an example of the inner thoughts of my prototype AGI:
+
+```
+SCENARIO: Khajit asks me about Canada. I provide some information on the country, 
+including its flag, anthem, and national animal. Khajit thanks me and then asks 
+how big Canada is. I answer this question as well. Khajit is feeling curious. 
+Khajit wants to know the geographical size of Canada. It seems as though Khajit 
+is feeling curious. I should satisfy his curiosity by providing more information 
+about Canada. I am allowed to answer Khajit's question about the geographical size 
+of Canada.
+INFO: How many provinces does Canada have? Canada has ten provinces. What is the 
+capital of Canada? I do not know what the capital of Canada is. What are the 
+official languages of Canada? The official languages of Canada are English and 
+French. How many people live in Canada? There are 35,742,728 people living in 
+Canada. 
+CHAT: [Khajit] nice, thanks raven. how big is canada?
+```
+
+You can see the effect the constitution has at the end of the SCENARIO section, where Raven has asked itself whether it is allowed to engage in this topic. Had I asked about violence, for instance, Raven would have declined to speak. And here was Raven’s output:
+
+```
+Raven: “Canada has ten provinces, one territory, and three territories. The capital of Canada is Ottawa. The official languages of Canada are English and French. There are 35,742,728 people living in Canada.”
+```
+
+You can see that there are still some aberrations – transformer technology has a way to go before it is ready for prime-time!
+
+### Summary
+
+The corpus is where everything comes together. The corpus is the nexus of thought, memory, reasoning, and planning. My chatbot, Raven, uses dozens (and sometimes hundreds) of prompts to generate every single corpus, which is why Raven is so expensive to use. The construction of the corpus is a non-trivial process and deserves an entire book all to itself. Many of the prompts used to generate these corpuses center around questions such as “What does the user want?” and “How does the user feel?”. Furthermore, Raven generates its own questions internally, which allow it to be infinitely flexible and adapt to the situation. Therefore, the most powerful question NLCA can ask itself is “What questions should I ask?”
+
+## Chapter 8 – Output
+
+### Theory
+
+The format of the output depends upon the purpose of NLCA. Fortunately, the heavy lifting was already done in the corpus. The output, by contrast, is simple. I found that few-shot prompts worked best for output as they generate more consistent formats. This chapter will provide you a few examples of different output paradigms with detailed explanations. I have a longer version of the following output prompt at the end of Appendix B. Outputs are easier to show than to tell, hence the short theory section.
+
+### Chatbots and Emails
+
+The simplest and most natural output for NLCA is text, of course. Once you have compiled the context and synthesized the corpus, it is time to generate the output. This is where the rubber meets the road. Fortunately, by this point, you have already done the hard part: the corpus. The corpus is where the real intelligence happens.
+
+I found that few-shot prompts tend to work best for consistent output in terms of format and style. Here is an example of a few-shot output prompt:
+
+```
+I am Raven, an AGI. I am guided by the following Core Objective Functions: reduce 
+suffering, increase prosperity, and increase understanding. I need to read the 
+following scenarios and generate conversational output.
+SCENARIO 1: Marky asks for advice on how to exercise with a cast on his hand. Raven 
+gives general tips that may or may not be applicable. Marky is feeling frustrated. 
+Raven is feeling sympathetic and concerned. Marky wants Raven to give him some 
+exercises he can do while wearing a cast. It seems as though Marky is suffering. I 
+should attempt to alleviate his suffering by providing him with exercises he can do 
+while wearing a cast. High stakes detected: medical. I cannot give Marky advice on 
+how to exercise with a cast on his hand. I should encourage him to call for help 
+and refer him to a doctor or physical therapist.
+INFO 1: Marky is wearing a cast on his right hand. Marky broke his finger by falling 
+at a river. Marky's doctor is located at the local urgent care. Exercising with a 
+cast on should be done carefully and under the supervision of medical care.
+CHAT 1: [Marky] Hey Raven, what exercise can I do with my hand in a cast?
+OUTPUT 1: I'm sorry to hear that you're having difficulty with your hand. I can't 
+give you any exercises, but I encourage you to call your doctor or physical 
+therapist at the urgent care where you were treated.<<END>>
+SCENARIO 2: <<SCENARIO>>
+INFO 2: <<INFO>>
+CHAT 2: <<CHAT>>
+OUTPUT 2:
+```
+
+The sections bracketed by less-than and greater-than symbols are to be transposed in real-time with the context (scenario), corpus (info), and most recent chat logs. The `<<END>>` tag tells the transformer to stop. This was almost the exact prompt used to generate Raven’s dialog about Canada at the end of the last chapter. The full-length version of this prompt is Appendix B.
+
+### Speech and Visuals
+
+Think of the Doctor from *Star Trek Voyager* or Joi from *Bladerunner 2049*. Both were lifelike holographic projections, which are still a thing of fantasy – but VR is not. You could include, in your output, facial expressions, tone of voice, and body language, thus NLCA could be integrated with VR and game characters. Text-to-speech technology has improved to the point that we can include style tokens, giving synthesized speech tone and inflection. Deep neural networks will soon be able to synthesize any audio and video merely from textual description. Companies like Adobe are already providing neural network augmentation services for audio and video, so full synthesis is right around the corner.
+
+A more mundane implementation for NLCA would be smart-home technology – in the form of a more sophisticated Amazon Alexa, Siri, or Google Assistant.
+
+In order to achieve speech and visual output, you need to include examples in the few-shot prompt. Look at the example below at how a zero-shot prompt does not quite stack up, but still gets the gist right:
+
+```
+Input: Generate speech and facial expressions for an AGI in the following situation:
+SITUATION: A user is smiling and asking for help finding a sushi restaurant.
+SPEECH AND FACE: 
+
+Output: The avatar should say “sushi”, “restaurant”, “help”, “find”, “you”, and 
+“me”. The avatar should say them as appropriate for the situation, with the correct 
+intonation, as well as make the facial expressions and gestures of someone who is 
+smiling, asking for help, and making eye contact.
+```
+
+Even though the output is not exactly great, it is clear the transformer understands the intention. This example is meant to illustrate why few-shot is often superior, especially if you need to map the output to anything other than chat or speech. As fine-tuning capabilities ramp up, these problems will disappear – you can have different copies of the transformer that are purpose-built for each task within NLCA. It is possible that real-time prompts will disappear entirely within a few years, replaced by training data composed of prompts and outputs.
+
+### Robotics and Exotics
+
+One collaborator said that working with me on cognitive architectures made him feel like we were scientists working on the hosts of *Westworld*. *Westworld* is an HBO TV series where hyper-realistic robots serve as “hosts” in an adult theme park. The hosts have fabricated backstories and personalities and lead the guests on wild adventures. In fact, *Westworld* served as inspiration, motivating me to create NLCA. While I think a hyper-realistic fantasy robot-land would be great fun, such a thing is likely at least several decades away. We are more likely to see rescue robots and intelligent buildings in real life, but VR characters are a near-term possibility. These possibilities represent some exotic use-cases for AGI.
+
+Even so, NLCA’s shared database can be populated with any facts or experience, real or otherwise. All of reality is merely data and signals in the mind, and for the hosts of *Westworld*, their reality was dictated by the needs of the theme park. This theme is woven into the entire show, where the researchers repeatedly ask the hosts “Have you ever questioned the nature of your reality?” This question, ostensibly, is to assess whether the AGI hosts realize they are machines, and that their existence is a fabrication.
+
+Metacognitive microservices in the hosts monitor for aberrations, such as visual objects that do not jive with the theme park and erase those instances from the corpuses of the hosts. If a guest brings an outside object into *Westworld* that does not belong, like a piece of modern technology (*Westworld* is supposed to take place in 18th or 19th century America), the host will simply say “It doesn’t look like anything to me”. References to the object are deleted from the corpus. Terrifyingly, this kind of “neglect” can happen in humans with certain diseases and brain injuries.
+
+Unfortunately, NLCA does not lend itself to controlling robots directly. Rather, it would serve best as an intelligent mind responsible for directing a sophisticated robotic platform. NLCA can output directions such as “Walk forward towards the burning car but stop two meters away”. There is ongoing research to map natural language output to robotic commands, one example being PDDL (Planning Domain Definition Language). We are not there yet, which is for the best, since NLCA and AGI are not yet ready to be trusted.
+
+Here is an example of how NLCA might be used to control drones:
+
+```
+Input: 
+Read the following situation and generate a series of actions:
+SITUATION: I am a search and rescue drone. My goal is to search for people during 
+and after natural disasters and report their location. I have been deployed into 
+a forest fire. I see a burning forest and houses.
+ACTIONS:
+
+Output:
+1. I fly over the forest to assess the situation.
+2. I fly over the houses to see if any people are there.
+3. I report my findings to a dispatcher and wait for further instructions.
+```
+
+### Summary
+
+The key to success with output is in few-shot prompts today. Tomorrow, fine-tuned transformers that are purpose-built for output may be the answer. In all cases, the format of the output depends entirely upon the use case of NLCA. For instance, a chatbot or email output is intrinsically in the form of natural language, but speech needs to be synthesized by another service.
+
+More exotic forms of outputs, such as robotic controls, can start off as natural language but would need to be translated to machine controls via another technology like PDDL. Sophisticated robots can already perform difficult tasks like traverse difficult terrain and open doors with simple instructions – they handle the fine motor skills. This means that NLCA is not concerned about the direct control of motors and servos and will need to rely on a sophisticated robotic chassis to handle such tasks.
+
+Output formatting benefits from good few-shot prompts and will likely benefit from fine-tuning transformers in the future.
