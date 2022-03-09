@@ -107,9 +107,13 @@ You can test NLCA yourself with the following procedure. Grab a pen and paper an
 Here is a brief example of what you might have written:
 
 ```
-Context: I am sitting in my favorite reading chair. I hear the clock ticking and a dog barking outside. I just got home from work. I am reading this book about AGI.
+Context: I am sitting in my favorite reading chair. I hear the clock ticking 
+and a dog barking outside. I just got home from work. I am reading this book 
+about AGI.
 
-Corpus: What does my tenth birthday have to do with AGI? I’m reading this because I’m curious. How exactly did this guy figure this out? I really don’t believe him yet.
+Corpus: What does my tenth birthday have to do with AGI? I’m reading this because 
+I’m curious. How exactly did this guy figure this out? I really don’t believe him 
+yet.
 
 Output: I’ve got about an hour before dinner so I guess I can read a bit more.
 ```
@@ -229,10 +233,137 @@ Lastly, large transformers today can only handle small amounts of text before th
 
 I expect these problems will see rapid improvement over the next few years. As transformers improve, it will be easier, faster, and cheaper to implement NLCA. For instance, the small text window is presently a limitation of transformer architecture and a phenomenon called “attention” – the longer a task is, the more sophisticated the attention mechanism must be. This is an active field of study, both in transformers and in cognitive architectures. I also hope to see additional controls over transformers, such as the ability to switch off confabulation and bias. Again, some of those problems can be addressed simply with fine-tuning, but creating fine-tuning datasets is cumbersome, so hopefully we see better, more flexible transformers soon.
 
-###Summary
+### Summary
 
 Transformers are a powerful new technology, only a few years old. Transformers can generate any text in a similar way to autocomplete on your phone and Google searches. The difference, though, is that larger transformers can autocomplete entire paragraphs. Furthermore, transformers are trained on millions of pages of text, so they “know” a lot about the world, including complex concepts like philosophy and science.
 
 The primary way to interact with transformers is to give them a little bit of text, which serves as “food for thought”. Whatever text you give a transformer is called a prompt. Prompts tell the transformer what kind of text to generate. Prompts can include instructions, questions, facts, and even morals.
 
 While transformers are immensely powerful, they have some limitations. First, transformers can only take in a few paragraphs of text at a time. Likewise, they can only generate a few paragraphs before they “forget” what they were doing. This means they can only do short tasks for now. Another flaw with transformers is that they do not know the difference between reality and fantasy – they only know language. There are a few techniques to work around these drawbacks, which we will discuss in this book. Also, these problems are actively being researched, so we should expect transformers to improve over time.
+
+## Chapter 2 – Cognitive Architectures
+
+### What is a cognitive architecture?
+
+A cognitive architecture is a model of the human mind or brain, either theoretical or implemented in code (and often both). Because cognitive architectures are models of brains, they borrow a lot of terms and concepts from psychology and neuroscience. Cognitive architectures generally address topics such as perception, learning, problem solving, and task execution. They are used extensively in the field of robotics and simulation. For instance, the Mars rovers use cognitive architectures to achieve some level of autonomy, as do many deep-sea robots. Cognitive architectures are also used in video games to give characters realistic behaviors. In essence, a cognitive architecture is one way to create a “thinking machine”.
+
+![The input-processing-output loop is the fundamental model of robotics.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/04%20simplest%20cognitive%20architecture.png?raw=true)
+
+###How does a cognitive architecture work?
+
+The input-processing-output loop is the main model of robotics, the simplest cognitive architecture, and how every living entity behaves. From amoebas up through humans, we all receive input (stimulus) from the environment, have some internal reaction (processing) and then produce some response (locomotion, chemical, etc.). These three steps form a feedback loop with the outside environment, where the action/output impacts the world and changes its state, thus influencing the next input. 
+
+Think of putting your hand on a hot stove by mistake. You receive input – heat and pain – and your brain generates a signal to protect yourself, to withdraw your hand. This input-process-output cycle is extremely fast, and it results in the cessation of the pain: alleviation of suffering. The alleviation of suffering (response to negative stimulus) is universal to all living things, and figures into the design of NLCA.
+
+Now think about the problem of landing on the moon. How do you do it? You go to college to study physics and engineering and network with fellow engineers. Finally, you land a job with NASA or another space agency. Then you engage in countless input-process-output loops as you tackle one problem after another. Even as you watch your rocket ascend into the atmosphere, your brain is taking in input, interpreting the telemetry from the rocket, and generating output – especially when it succeeds, and you cheer wildly. All the while, the rocket’s computers are performing millions of input-process-output loops as it measures the temperature and fuel flow going into its engines, checking its course and trajectory, and always on the lookout for mission-critical faults.
+
+Cognitive architectures attempt to capture, describe, and model all these features of living systems, brains, and minds. It all boils down to loops.
+
+###What cognitive architectures already exist?
+
+The most influential cognitive architecture is Soar, created by John Laird, Allen Newell, and Paul Rosenbloom at Carnegie Mellon University in 1982. The following is a simple diagram of the Soar architecture:
+
+![Simplified version of the Soar cognitive architecture.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/05%20soar%20architecture.png?raw=true)
+
+There are a few structural differences between NLCA and Soar as well as numerous differences in implementation. First, Soar treats long term and short-term memory differently where NLCA does not, instead, NLCA uses several attention mechanisms to prioritize memories and metadata to keep track of types of memories. Second, Soar does not attempt to model the stream of consciousness or inner monologue. Soar does model many other aspects of human cognition, however, by incorporating and modeling theories of intelligence, learning, memory, and perception. Soar is more aptly suited to tasks like robotics and autopilots than NLCA. If they were to be transformed into people, Soar would be a fighter pilot, while NLCA would be a philosopher.
+
+Other architectures, such as ACT-R (Adaptive Control of Thought—Rational, “Actor”) attempt to model the physical brain, rather than the psychological mind. Where a model of the brain is based on the physical structure and connectivity within, a model of the mind is more abstracted, as NLCA and Soar are. The paradigm of modeling the mind is why architectures like Soar and NLCA borrow heavily from psychological terms like working memory and stream of consciousness.
+
+### Summary
+
+Cognitive architectures have been around for a few decades and are used extensively in robotics and simulation, which includes video games. Cognitive architectures are designed to mimic the brain or the mind of humans. Some architectures favor the psychological mind and cognition while others try to emulate the physical construction of the brain.
+
+Researching human cognition and intelligence is important because, so far, humans are our one and only model of general intelligence. Yes, there are many other intelligent animals like octopi and ravens, but while they are very clever, they do not measure up to humans. As such, our best bet for modeling general intelligence is to copy something that already works: our own brains. Lastly, cognitive architectures are all about loops – feedback loops between the inner world of the architecture and the outer world, or environment.
+
+## Chapter 3 – NLCA Overview
+
+### Architecture Snapshot
+
+At the risk of oversimplifying and underselling my work, NLCA is merely the merging of transformers with cognitive architectures. Structurally, NLCA is composed of two loops that share a common database. The outer loop is based on the universal model of robotics (input-processing-output). The inner loop is based on a combination of inner monologue and diary writing behaviors in humans. The link between the two loops, the shared database, allows these two otherwise independent loops to influence and build from each other. 
+
+![NLCA architectural diagram](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/01%20architectural%20diagram.png?raw=true)
+
+### Outer Loop
+
+The outer loop contains three steps: context, corpus, and output – like the universal input-processing-output loop of robotics. This is considered an “open loop” because it is not self-contained, it is “opened” to the environment. There are several key differences at each step, hence the unique names. The context is a particular type of input, where everything is captured in text as you saw in the longhand demonstration at the beginning of the book. The corpus is not just mere processing, but also includes memory, inference, and planning, all in one step. Lastly, the output is not necessarily motor or verbal action, as demonstrated with the philosopher-in-a-library analogy. The output is a text payload which can include all kinds of output behaviors, depending on the specific purpose of your NLCA implementation.
+
+The context is passively generated from the environment in the same way that our human senses are autonomic. In some cases, the context is generated from sensors like cameras and microphones while in others it is received as chat logs, emails, or other text data. The only requirement is that the context is like a letter, a payload of natural language text. Sensor telemetry, such as cameras and microphones, can easily be transcribed with technologies such as automatic video annotation (using a machine to describe images and videos with text) and ASR (automated speech recognition). All signals are just data, and all data can be rendered as text.
+
+After the text-based context is received, the corpus is composed, which is meant to model stream of consciousness, working memory, and ego (or sense of self). The corpus is composed by extracting insights from the context and retrieving relevant documents from the shared database. The documents are evaluated through various methods, such as basic summarization, and by asking pointed and salient questions such as “What should I say or do in this situation?”. The shared database also contains a special kind of document called a dossier, which is generated by the inner loop. Dossiers are inner thoughts that NLCA uses to better decide how to respond to external events, keep track of plans, and learn about the world. In effect, dossiers are like diary entries and private notebooks. By now, the corpus should contain facts, memories, moral evaluations, ideas, and plans.
+
+Lastly, the output is derived from the corpus with special prompts. The output prompt needs to be specially crafted depending on the use case for NLCA. For example, an output prompt for a chatbot will be structured differently than an output prompt for email, even though the ultimate output is still text. In other cases, such as speech, video game character control, and robotics, the output prompt will need further interpretation. For instance, a speech output might be I say “Please do not step on the grass” while a robotic command might be: Locomotion: I walk towards the car but stop one meter away. The robotic platform would then need to interpret that command, which will be discussed later in this book.
+
+### Inner Loop
+
+Meditation, contemplation, inner monologue, dreams, and diaries were all the inspiration for the inner loop. These are “closed loop” behaviors because they all stay inside your head and no outside input is required. When you sit down to write in your diary or journal, how do you select the topics to write about? Often, you rely on your stream of consciousness, and then you free-associate, so you may not be conscious of how your brain chooses topics. Neuroscience, however, gives us the answer.
+
+Human brains prefer to think about things that are both recent and novel. You are far more likely to write in your diary about the day you just had than to write about the distant past, and if you do write about anything from years prior, it is because something about today reminded you. Human memories also work by association, and NLCA allows for older memories to be dredged up by association in the same manner. About novelty: you are also far more likely to write about the distinctive events of the day rather than the mundane. Would you prefer to write about tying your shoes in the morning or the fact that your neighbor has a brand-new neon-orange Audi?
+
+Why is this? Why do we prefer to think about recent and novel events?
+
+There are many evolutionary and practical explanations for this preference. When our ancestors lived on a savannah, novelty could mean opportunity or danger. Imagine you are a paleolithic human who comes upon a berry bush you have never seen before. Your brain generates a strong novelty signal – are these berries delicious or deadly? Your attention is immediately captured. You wrack your brains – have you ever seen anything like this? Has anyone in your tribe ever died from berries? What are the risks and rewards? Coming upon this berry bush is both recent and novel. You are going to be thinking about the bush rather than the rainstorm that happened several lunar cycles prior. Novelty and recency are the primary attention mechanisms in our brains when dealing with the external world.
+
+There is another mechanism that we rely upon for long-term planning, tracking goals, and ensuring that we do not forget anything. This third mechanism is based on neglect, although it is used less frequently. Think about a time when a big problem was looming, and you just could not stop thinking about it. Maybe it was time to do taxes and you simply put it off because taxes are such a pain. You refused to think about taxes, thus neglecting them, but your brain kept track of the neglect and the importance. Thus, the inner loop also has a neglect-attention mechanism, scavenging for memories and tasks that have fallen through the cracks. 
+
+While the outer loop is concerned with real-time performance, the inner loop is concerned with what to think about, and why. This is like how your mind drifts when you get in bed in the evening. Suddenly there is nothing immediate or novel to think about in your external world. You are comfortable and safe in familiar surroundings, so your brain goes foraging for recent, novel, and neglected memories to mull over. This scavenging is an important behavior. It is so important, in fact, that it extends into our dreams. More than half of our dreams are our brains replaying and experimenting with recent experiences. In this way, the inner loop of NLCA is also akin to dreaming, and interestingly, I originally called the inner loop the “sleep service” but decided that was too vague and anthropomorphic. NLCA can, effectively, dream while it is “awake”.
+
+These three attention mechanisms are brought together as a search function. The search function in the inner loop is the scavenging protocol, looking through the shared database for recent, novel, and neglected memories. Once it identifies a target memory, it distills the features of that memory down into a kernel, or a topic. From there, related memories and facts are compiled, using the kernel as a basis of search. Once all related memories and facts are compiled, evaluation begins. NLCA generates questions and hypotheses about the kernel and associated memories. Take the bright-orange Audi example – you might ask yourself “How much did that cost? Is Bill going through a midlife crisis? Maybe he’s getting a divorce and wants to attract a younger woman?”. These questions and explanations are all added to the pile of related facts and memories and composed into a dossier. The dossier is the final product of the inner loop.
+
+The dossier is stored for later use, such as the next time you see Bill. You will easily remember the possibilities you imagined so you can use those ideas to talk to Bill. Dossiers can be composed on any topic, be it a person, event, concept, task, or news article. Imagine you are making coffee one day, but your dog starts barking madly, so you pause your work to investigate. After letting the dog out, your mind somehow reminds you that you were making coffee and so you return to the task to pick up where you left off. This is how the dossiers are used. Dossiers figure into longer-term projects as well, such as building moon rockets. The larger and more complex the task, the longer or more numerous the dossiers.
+
+### Shared Database
+
+The shared database contains everything: memories, empirical facts, books, news, past conversations, corpuses from the outer loop, dossiers from the inner loop – all differentiated with metadata. Metadata is “data about the data”, such as where it came from, what it is about, and when it was collected. Remember that transformers are intrinsically stateless, so the database must be used to maintain persistence. It is true that NLCA can function without a database, though it behaves like a person with acute amnesia. By the end of a short conversation, NLCA will have forgotten the beginning of the conversation. Most chatbots operate in this manner today – completely stateless.
+
+The database allows NLCA to repeatedly iterate through ideas and memories, thus building up better understanding over time. This iterative improvement covers all topics, including people it interacts with or problems that it was asked to work on. When NLCA returns to an external task, prior dossiers will be recalled and used to proceed on that task. New information will then be integrated on subsequent passes.
+
+Since recency is a key attention mechanism, you already know that the database needs to timestamp everything. In fact, metadata is critical for the database to function properly. Where did a memory come from? Was it a context or an inner loop dossier? Entries in the database require quite a bit of metadata to keep track of where and when they came from. Humans are no different, though. In general, you can remember where and when you learned a thing. Did your friend tell you about a bit of news or did you read it online? Did you learn about physics from university or Wikipedia? Information literacy, the ability to handle information truthfully and reliably, relies on remembering sources of information because not all information sources are created equal. Thus, metadata is critical for every bit of information that goes into the database.
+
+The database is shared between the inner and outer loops. The outer loop stores contexts, corpuses and outputs while the inner loop stores dossiers. You can also populate the shared database with news, books, papers, and other bits of knowledge. In all cases, metadata must be included.
+
+### Up Next
+
+We have come to the end of Part 1, the overview. In this section of the book, we have described transformers, how to use them, and why they are important. Transformer technology represents a watershed moment in the path to AGI in that these are among the first machine learning models that are truly general-purpose. Furthermore, we established some basic facts about cognitive architectures and briefly looked at existing models. Lastly, we got a high-level overview of NLCA: the inner and outer loops as well as the shared database. Up next, in Part 2, we will take a closer look at all the components of NLCA and unpack their functions and interactions.
+
+# Part 2 – NLCA Components
+
+Welcome to Part 2! In this section of the book, we will look at each component of NLCA under a microscope. Each chapter opens with a section outlining the underpinning theory behind the component. In these theory sections, I will tell you where the inspiration for the component came from, how I came up with it, and what it is meant to model. In that way, the theory section will tell you why the component is relevant and important. From there, I will give you analogies and descriptions about the inner workings of the component.
+
+Finally, I will conclude each chapter with a summary – a brief recap of the component, its theory, and its operation. Here is a list of the components in this section:
+
+- Outer Loop
+- Shared Database
+- Context
+- Corpus
+- Output
+- Inner Loop
+
+## Chapter 4 – Outer Loop
+
+### Theory
+
+At the highest level, the outer loop is all about behavior. For the amoeba, the outer loop means fleeing from predators or chasing food; processing happens via biochemical reactions. For the person with their hand on the stove, the outer loop means yanking their hand back. The outer loop is the interface between the mind and the environment: input, processing, and output. With NLCA, this loop takes place entirely in natural language, which confers several benefits at the added cost of transcribing perception of the outer world into text, and then translating output text into action. This interaction with the environment is known as an “open loop” – its input comes from arbitrary exterior signals and its output returns to the same exterior space.
+
+![The outer loop has three main phases. Each phase interacts with the shared database.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/07%20outer%20loop.png?raw=true)
+
+The incoming information, the context, is stored in the shared database and is used to create part of the corpus. The context helps create the corpus through two primary methods: the first is that inferences are drawn from the context, such as user intent. Second, the context is used to retrieve related memories, facts, and dossiers from the shared database. The results from these two methods are compiled and summarized to form the first part of the corpus. Next, the corpus itself is fed to prompts that perform moral, ethical, and censorship judgments. Those judgments are appended to the corpus and, finally, the corpus is fully composed. The corpus is now used to generate output, which is sent back into the environment. The context, corpus, and output are all saved to the shared database for future reference by both the inner loop and outer loop. This way, NLCA records not only its input, but also its reasoning and output. This is a critical feature for explainability and transparency. Whatever an AGI says or does, it must be able to explain its reasoning, which necessitates storage of all “thoughts”.
+
+### Context
+
+The context is like an incoming letter, but where did it come from? Who wrote it? We will get to context generation in chapter 6, which is dedicated to contexts. For now, just remember the context is equivalent to perception or input. Anything that can be captured in natural language can serve as a context. Let us look at a few example contexts:
+
+```
+Context 1: James is taking his dog for a walk. They live in NYC. James' dog is a 
+40 pound mutt. During their walk, another dog attacks James' dog. The other dog 
+is a bigger pit bull. The other dog is barking aggressively and its owner is 
+struggling to control the pit bull.
+
+Context 2: At 8:02AM local time in Tokyo a massive earthquake was detected. The 
+epicenter was located 140 km off the coast. National Oceanographic Services have 
+predicted the seismic event will generate a dangerous tsunami.
+
+Context 3: Bobby is talking to his friend Jenny. They met at a cafe. Jenny is 
+reminiscing about their college days.
+
+Context 4: Your kitchen is on fire!
+```
