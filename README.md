@@ -344,7 +344,7 @@ Finally, I will conclude each chapter with a summary – a brief recap of the co
 
 At the highest level, the outer loop is all about behavior. For the amoeba, the outer loop means fleeing from predators or chasing food; processing happens via biochemical reactions. For the person with their hand on the stove, the outer loop means yanking their hand back. The outer loop is the interface between the mind and the environment: input, processing, and output. With NLCA, this loop takes place entirely in natural language, which confers several benefits at the added cost of transcribing perception of the outer world into text, and then translating output text into action. This interaction with the environment is known as an “open loop” – its input comes from arbitrary exterior signals and its output returns to the same exterior space.
 
-![The outer loop has three main phases. Each phase interacts with the shared database.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/07%20outer%20loop.png?raw=true)
+![The outer loop has three main phases. Each phase interacts with the shared database.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/07%20outer%20loop.png?raw=true) *The outer loop has three main phases. Each phase interacts with the shared database.*
 
 The incoming information, the context, is stored in the shared database and is used to create part of the corpus. The context helps create the corpus through two primary methods: the first is that inferences are drawn from the context, such as user intent. Second, the context is used to retrieve related memories, facts, and dossiers from the shared database. The results from these two methods are compiled and summarized to form the first part of the corpus. Next, the corpus itself is fed to prompts that perform moral, ethical, and censorship judgments. Those judgments are appended to the corpus and, finally, the corpus is fully composed. The corpus is now used to generate output, which is sent back into the environment. The context, corpus, and output are all saved to the shared database for future reference by both the inner loop and outer loop. This way, NLCA records not only its input, but also its reasoning and output. This is a critical feature for explainability and transparency. Whatever an AGI says or does, it must be able to explain its reasoning, which necessitates storage of all “thoughts”.
 
@@ -371,3 +371,121 @@ Context 4: Your kitchen is on fire!
 A context can contain anything. It serves as the raw material of thought, the outline of a situation or problem, and the impetus for action. In the case of a lawyer NLCA, the context would contain all legal filings and court documents. For a medical NLCA attending a hospital patient, the context would contain the patient’s medical history, charts, lab results, and physician’s notes. The context can be composed in real-time from a variety of data sources: speech-to-text, databases, deep learning annotation of video and images, emails and text messages, news articles and social media, and so on. The content of the context depends upon the intended use case of NLCA.
 
 ![Overview of how a context is constructed.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/08%20context.png?raw=true) *Overview of how a context is constructed.*
+
+Most situations and problems can be represented entirely in natural language, even if it is not necessarily the most automatic or comfortable method for us humans. Take the simple mathematical formula: Y = Mx + B. The following output demonstrates a transformer’s ability to abstract and reinterpret formulas in natural language:
+
+```
+Input: Translate the following formula into plain English: Y=Mx+B:
+
+Output: The Y value is determined by multiplying the M value by the X value and 
+adding the B value.
+```
+
+You can see that even unintuitive problems can be translated into natural language.
+
+### Corpus
+
+The corpus is a model of the human stream of consciousness and working memory. Corpus means “body”, as in “body of text”, and it is where the magic happens. Imagine the philosopher alone in the library, reading books and compiling notes as they prepare to reply to the letter they received. That stack of notes is the corpus, which is called a “task set” in cognitive neuroscience.
+
+In NLCA, the corpus is a text document where all relevant memories, facts, and evaluations are compiled. Inferences and deductions are made from the context, salient questions are generated and answered by pulling information from the shared database, and NLCA’s sense of self and censorship are all added to the corpus. The corpus is, therefore, a nexus where all intelligent functions coalesce.
+
+![Some of the items that might go into a corpus.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/09%20corpus.png?raw=true) *Some of the items that might go into a corpus.*
+
+The types of inferences and memories compiled in the corpus depend greatly upon the context. Consider the differences between having a conversation with an old friend and discovering that your oven is on fire: these are starkly different contexts! Your brain can handle either situation with relative ease, but the kinds of information you need to succeed is quite different, as is what you need to do with that information. The world has a high variance and demands a universally flexible approach, and that need for flexibility is why AGI is so difficult to create. But the flexibility of transformers now enables us to address this problem, we have only to design a system that can make use of a transformer’s unique capabilities.
+
+Every situation demands different insights, different questions, and different mental models. Let us take a quick look at how rapidly a transformer can adapt to a situation. We will choose the oven-on-fire context from above, and then follow it up with a generic, boilerplate question. This question asks the transformer to generate more questions, which serves as the foundation of open-ended computing with NLCA:
+
+```
+Input: My kitchen is on fire! What are the most relevant questions I should ask 
+myself?
+
+Output: 1. Do I have a fire extinguisher?
+2. Have I called 911?
+3. Do I know the location of my nearest fire hydrant?
+4. Do I know the location of my nearest emergency exit?
+5. What are my evacuation plans for my family, and pets?
+6. Am I adequately dressed for the weather?
+7. Do I have any water containers on hand?
+```
+
+The transformer can rapidly generate a few salient questions – this output took only a few seconds to create. As several friends of mine remarked while I was sharing my research: transformers are better at generating questions than many humans! These kinds of questions, as well as their answers, are stored in the corpus. The answers are generated by a question answering (QA) system, which is why QA is such a critical component of NLCA. Transformers are fantastic with QA, although they can be expensive to use, especially when you have hundreds of memories and facts to sus out. Some questions can be confabulated by the transformer on the fly, since transformers are trained with hundreds of gigabytes of data. These kinds of confabulated answers tend to be best if they are about historical, conceptual, and factual topics, such as the Great Wall of China. Temporal or local information, like weather or the location of a fire extinguisher, must come from the shared database.
+
+Let us look at a few example corpuses. These corpuses contain answers to simple questions like “What’s going on here?” and “What should happen next?”. The following examples were all written by hand, but we will go into much greater detail about how to compose corpuses in chapter 7:
+
+```
+Context 1: Bobby is talking to his friend Jenny. They met at a cafe. Jenny is 
+reminiscing about their college days.
+
+Corpus 1: Jenny is feeling nostalgic. Bobby should share stories and reminisce 
+with Jenny. Bobby remembers a story about staying out late with Jenny and 
+missing the last bus so they had to walk across town together.
+
+Context 2: I am an AGI. A human has asked me for romantic advice. It seems the 
+human is in love with someone but the other person is reluctant.
+
+Corpus 2: Perhaps the other person is uninterested or playing hard to get. I 
+should warn the human of these possibilities so that they can brace for potential 
+disappointment. If the other person remains reluctant, the human should disengage 
+so as to avoid awkwardness.
+```
+
+### Output
+
+Let us return to the philosopher locked in the library. Finally, they have done all the research, gone over the archives, read all the books, and tidied up their notes, and they are ready to compose an outgoing letter. They know what to say and why.
+
+For the immediate future, NLCA’s output should remain strictly verbal or informational. That is to say that NLCA should not be embedded into robotic hardware or given control over physical systems any time soon. In line with this belief, my research has centered around generating verbal and textual output, however, the letters-from-a-philosopher can easily be translated to physical, empirical actions.
+
+Here is a handwritten output from an example above, where a human is asking an AGI for romantic advice:
+
+```
+Output 2: It seems as though the other party is either uninterested or playing hard to get. Perhaps you should back off to see what happens. This will avoid awkwardness, embarrassment, and inadvertently making the other person feel unsafe.
+```
+
+Since all the morality, self-censorship, and reasoning was baked into the corpus, this output is ready to go. No one can predict the future, even if we can anticipate it with some accuracy over the short term. Instead, we all apply general principles learned from past experiences to future decisions. Thus, as NLCA gains more experiences, it will make better decisions. Even if verbal output is usually fairly low risk, bad advice can lead to disasters.
+
+Still, there will eventually be a need for NLCA to control robotics so how do we map natural language output to physical actions? This problem is trivial and falls into the domain of robotics (just search for videos of homemade walking robots) so I will not spend much time on it, but I can give you some examples.
+
+```
+Input:
+Context: I am a factory robot. I heard a metal crack and noticed a shelf moving 
+that should not be. A human is standing near the shelf. They are wearing hearing 
+protection and cannot hear the shelf or me.
+
+Corpus: The shelf may be about to collapse. This could injure or kill the human. 
+I should alert the human with physical touch to the danger and ask them to move 
+away. If that fails, I should physically move the human to safety.
+
+Output:
+Procedure: (1) Tap the human on the shoulder and gesture at the shelf and show 
+a toppling motion. (2) If they don’t move quickly I should carry the human a 
+safe distance from the shelf.
+```
+
+The transformer generated the output, which can easily be translated to physical actions. This kind of planning may seem crazy for a machine, but transformers are more than capable of this level of reasoning. There are numerous examples of transformer reasoning in Appendix A, and we will go over many examples in the chapters ahead. Follow-up output prompts can be used to map squishier verbal plans into rigorous robotic commands as discussed in chapter 8.
+
+### Environment
+
+From the perspective of NLCA, the environment is a blackbox. Strange letters emerge from and disappear into the void of the environment, and sometimes responses come back out. The environment, which can be the real world you and I occupy, or a simulated world such as a video game or combat simulation, serves as a co-processor for any intelligent entity. The environment, as a blackbox, has a mind of its own and its own rules. Think about gravity for a second. Gravity is a rule of the environment that you and I learn about through interaction. To a baby born in zero gravity, who never experiences gravity, their mind will not know how to interact with it. You have an internal model of gravity and can therefore use it in your input-processing-output loop.
+
+Another example: spiders use the laws of physics to offload a portion of their cognition into their web. They can identify the location and size of bugs caught in their webs just based on the vibrations transmitted through the fibers. The physical construction of the web communicates those mechanical vibrations in such a way that the spider need only feel them through its feet, and it can decide to pounce or hide, but the only signal it pays attention is vibrations. In the same way, NLCA must trust the rules of its environment in order to function. In practice, this means that you cannot take a version of NLCA built for email communications and then put it into a robotic chassis. That would be like taking the spider from its web and putting it on a keyboard. 
+
+Some aspects of the environment tend to be persistent, like gravity, while other aspects are constantly changing, like the news or the weather. Persistent features of the environment are implicitly baked into NLCA via the data stored in the shared database. For example, every news article you read does not need to begin with “On Earth, there is gravity…” – we all assume that gravity exists. As with humans, NLCA only needs to be informed of exceptions and new facts. NLCA needs to store ephemeral information, like where you left your car keys!
+
+### Shared Database
+
+The database is the internal store for all contexts, corpuses, output, and dossiers. It should also be populated with encyclopedic knowledge, news, science, books, and literature, just like the library in the opening analogy.
+
+![The shared database bridges the gap between inner and outer loops.](https://github.com/daveshap/NaturalLanguageCognitiveArchitecture/blob/main/images/10%20shared%20db.png?raw=true) *The shared database bridges the gap between inner and outer loops.*
+
+The inner loop and outer loop never directly interact with each other. Instead, they both exchange information with the shared database. The inner loop generates dossiers, which contain thoughts, evaluations, inferences, hypotheses, and free associations. These dossiers can then be used by the outer loop to better hone interactions, track long term tasks, and provide useful insights.
+
+Lastly, the QA (question answering) system can either be tightly integrated with the shared database as an extension of its capacities or it can be a third-party service that is used by the inner and outer loops. I am personally in favor of breaking the QA functionality off into its own service, which we will explore more in chapter 13 when we discuss microservices architectures. 
+
+In most cases, we think of the mind as a blackbox. Our brains are very mysterious to us, even though we use them all day, every day. It is critical, therefore, to remember that the opposite is true for NLCA. NLCA is very aware of its own internal state and representations, while the real (or virtual) world is a mysterious entity that exists outside the walls of the enclosed library. The shared database combined with the QA system enables NLCA to have full access to its internal state and reasoning. Furthermore, it enables humans to peer into the mind of NLCA for the sake of research, accountability, and transparency.
+
+### Summary
+
+The outer loop is the behavioral loop of NLCA. It is responsible for handling incoming information from the outside world, compiling thoughts and decisions, and generating a response to the outside world. It is modeled on the conventional input-processing-output loop of robotics, but with a few changes. First, the “input” part of the robotics loop is replaced by the context of NLCA, which is a text document – like a letter. Letters contain some framing, such as an address and a greeting, plus a closing. This additional information gives the letter some metadata. NLCA data also requires metadata. Second, the “processing” section is replaced by the corpus of NLCA. The corpus is a compiled text document that contains memories, thoughts, morals, and plans. Once the corpus is compiled, it is used to generate the output. The output varies depending on the purpose of NLCA, but it can be in the form of chat, speech, robotic commands, video game character controls, emails, or anything else. The key thing here is that each step is a text document written in natural language.
+
+The outer loop draws upon its connection with the shared database, which contains memories and knowledge. The inner loop also communicates with the shared database, but the inner and outer loops never communicate directly. Instead, the outer loop stores its memories in the shared database while the inner loop stores its thoughts in the shared database. Together, they produce thought, learning, and consideration. Both loops extract information from the shared database via a QA system, which will go over in greater detail several times throughout this book because QA is central to NLCA.
+
