@@ -1,4 +1,4 @@
 # Natural Language Cognitive Architecture
 ## A Prototype Artificial General Intelligence
 
-![NLCA architectural diagram](/images/01 architectural diagram.png “NLCA Architectural Diagram”)
+![NLCA architectural diagram](/images/01 architectural diagram.png)
